@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,22 +8,17 @@ import { RegisterSchema } from "./schemas/RegisterSchema";
 import useRegister from "@/hooks/api/auth/useRegister";
 
 const RegisterPage = () => {
-  const { register, isLoading } = useRegister();
+  const { register,isLoading } = useRegister();
 
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
       password: "",
-      role: "CUSTOMER" as "ADMIN" | "CUSTOMER", // Default value untuk role
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values) => {
-      // Cast the role to "ADMIN" | "CUSTOMER"
-      await register({
-        ...values,
-        role: values.role as "ADMIN" | "CUSTOMER", // Perubahan tipe dari string ke tipe yang diharapkan
-      });
+      await register(values);
     },
   });
 
@@ -76,23 +71,9 @@ const RegisterPage = () => {
                   onBlur={formik.handleBlur}
                 />
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="role">Role</Label>
-                <select
-                  name="role"
-                  value={formik.values.role}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  className="border border-gray-300 rounded p-2"
-                >
-                  <option value="CUSTOMER">Customer</option>
-                  <option value="ADMIN">Admin</option>
-                </select>
-              </div>
+              <div className="flex flex-col space-y-1.5"></div>
             </div>
-            <Button className="mt-6 w-full bg-blue-500" disabled={isLoading}>
-              {isLoading ? "Loading..." : "Submit"}
-            </Button>
+            <Button className="mt-6 w-full bg-blue-500" disabled={isLoading}>{isLoading ? "Loading..." : "Submit"}</Button>
           </form>
         </CardContent>
       </Card>
