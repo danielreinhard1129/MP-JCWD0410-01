@@ -4,28 +4,24 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface RegisterArgs {
-  name: string;
   email: string;
   password: string;
-  role: "ADMIN" | "CUSTOMER"; // Tambahkan role di sini
 }
 
-const useRegister = () => {
+const useLogin = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const register = async (payload: RegisterArgs) => {
+  const login = async (payload: RegisterArgs) => {
     setIsLoading(true);
     try {
-      await axiosInstance.post("api/auth/register", {
-        name: payload.name,
+      await axiosInstance.post("api/auth/login", {
         email: payload.email,
         password: payload.password,
-        role: payload.role, // Sertakan role di sini
       });
 
       alert("Register success");
-      router.push("/login");
+      router.push("/");
     } catch (error) {
       if (error instanceof AxiosError) {
         alert(error.response?.data);
@@ -35,7 +31,7 @@ const useRegister = () => {
     }
   };
 
-  return { register, isLoading };
+  return { login, isLoading };
 };
 
-export default useRegister;
+export default useLogin;

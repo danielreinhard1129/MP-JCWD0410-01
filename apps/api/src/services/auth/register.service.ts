@@ -1,16 +1,15 @@
-import { User } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import prisma from '../../prisma';
 import { hashPassword } from '@/lib/bcrypt';
 
-
-export const registerService = async (body: User) => {
+export const registerService = async (body: Prisma.UserCreateInput) => {
   try {
-    const { name, email, password } = body;
+    const { name, email, password, role } = body;
 
     const existingUser = await prisma.user.findFirst({
       where: { email },
     });
-    
+
     if (existingUser) {
       throw new Error("Email already exist");
     }
@@ -23,11 +22,11 @@ export const registerService = async (body: User) => {
         name,
         email,
         password: hashedPassword,
-       
+        role,
       },
     });
 
-return newUser
+    return newUser;
   } catch (error) {
     throw error;
   }
