@@ -6,9 +6,8 @@ import { Label } from "@/components/ui/label";
 import { values } from "cypress/types/lodash";
 import { useFormik } from "formik";
 import { LoginSchema } from "./schemas/LoginSchema";
-
-import Link from "next/link";
 import useLogin from "@/hooks/api/auth/useLogin";
+import Link from "next/link";
 
 const LoginPage = () => {
 
