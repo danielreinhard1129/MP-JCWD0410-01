@@ -11,17 +11,17 @@ import Link from "next/link";
 
 const LoginPage = () => {
 
-  const {mutateAsync: login, isPending :isLoading} = useLogin()
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: LoginSchema,
-    onSubmit: async (values) => {
-      await login(values);
-    },
-  });
+  const {login,isLoading} = useLogin()
+    const formik = useFormik({
+        initialValues:{
+            email: "",
+            password: "",
+        },
+        validationSchema: LoginSchema,
+        onSubmit : async (values)=>{
+            await login(values)
+        }
+    })
   return (
     <div>
       <main className="flex justify-center pt-20">
