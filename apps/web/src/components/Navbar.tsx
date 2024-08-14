@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { IoSearch, IoMenu, IoClose } from "react-icons/io5";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -22,6 +23,14 @@ export const Navbar = () => {
     { name: "About", href: "/about" },
     { name: "FAQ", href: "/contact" },
   ];
+
+  const pathname = usePathname()
+
+  const isPathname = pathname === "/login" || pathname === "/register"
+
+  if (isPathname) {
+    return null
+  }
 
   return (
     <div className="sticky top-0 z-50 w-full border-b-[1px] border-neutral-300 bg-[#fbfbfb] text-color1">
@@ -76,7 +85,7 @@ export const Navbar = () => {
               </div>
               <div className="col-span-1">
                 <Link
-                  href="/register"
+                  href="/login"
                   className="w-full rounded-md border-[1px] border-color2 bg-color2 px-6 py-2 text-white"
                 >
                   Login
@@ -132,13 +141,13 @@ export const Navbar = () => {
             <div>Untuk menggunakan semua fitur di Loket</div>
             <div className="grid w-full grid-cols-2 gap-2 border-b-[1px] pb-8 text-center">
               <Link
-                href="/login"
+                href="/register"
                 className="w-ful rounded-md border border-color2 px-4 py-2 text-color2"
               >
                 Daftar
               </Link>
               <Link
-                href="/register"
+                href="/login"
                 className="w-ful rounded-md bg-color2 px-4 py-2 text-white"
               >
                 Masuk
