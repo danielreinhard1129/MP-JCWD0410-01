@@ -1,19 +1,19 @@
-import { User } from '@prisma/client';
+import { Roles, User } from '@prisma/client';
 import prisma from '../../prisma';
 import { hashPassword } from '@/lib/bcrypt';
 
-
 export const registerService = async (body: User) => {
   try {
-    const { name, email, password } = body;
+    const { name, email, password, role } = body;
 
     const existingUser = await prisma.user.findFirst({
       where: { email },
     });
-    
+
     if (existingUser) {
-      throw new Error("Email already exist");
+      throw new Error('Email already exist');
     }
+    // TODO: create logic referral here
 
     // Hash the password
     const hashedPassword = await hashPassword(password!);
@@ -23,11 +23,12 @@ export const registerService = async (body: User) => {
         name,
         email,
         password: hashedPassword,
-       
+        referral: '', // TODO: add referral value here
+        role,
       },
     });
 
-return newUser
+    return newUser;
   } catch (error) {
     throw error;
   }

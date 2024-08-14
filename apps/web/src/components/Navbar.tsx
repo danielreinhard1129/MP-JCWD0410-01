@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { IoSearch, IoMenu, IoClose } from "react-icons/io5";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -17,6 +18,8 @@ export const Navbar = () => {
     setIsOpenSearch(!isOpenSearch);
   };
 
+  const pathname = usePathname();
+
   const menuItems = [
     { name: "Events", href: "/events" },
     { name: "About", href: "/about" },
@@ -27,7 +30,7 @@ export const Navbar = () => {
     <div className="sticky top-0 z-50 w-full border-b-[1px] border-neutral-300 bg-[#fbfbfb] text-color1">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-4">
         <Link href="/">
-          <div className="relative h-12 w-32 overflow-hidden">
+          <div className="relative h-10 w-28 overflow-hidden">
             <Image
               src="/logo-purple.png"
               alt="concert"
@@ -37,7 +40,9 @@ export const Navbar = () => {
           </div>
         </Link>
 
-        <div className="hidden w-48 items-center gap-4 text-sm sm:w-80 md:inline-block md:w-5/12">
+        <div
+          className={`hidden w-48 items-center gap-4 text-sm sm:w-80 md:inline-block md:w-5/12 ${pathname === "/events" ? "md:hidden" : ""}`}
+        >
           <label className="relative block">
             <span className="sr-only">Search</span>
             <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-color2 px-3">
