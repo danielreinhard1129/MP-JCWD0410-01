@@ -1,7 +1,7 @@
 import LoginPage from '@/features/login'
 import React from 'react'
 
-const Register = () => {
+const Login = () => {
   return (
     <div>
         <LoginPage/>
@@ -9,4 +9,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Login
