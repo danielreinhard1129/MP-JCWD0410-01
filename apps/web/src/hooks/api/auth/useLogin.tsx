@@ -1,37 +1,35 @@
-import { axiosInstance } from "@/lib/axios";
-import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+"use client";
 
-interface RegisterArgs {
+import useAxios from "@/hooks/use.Axios";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { signIn } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
+interface LoginPayload {
   email: string;
   password: string;
 }
 
+
 const useLogin = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const { axiosInstance } = useAxios();
 
-  const login = async (payload: RegisterArgs) => {
-    setIsLoading(true);
-    try {
-      await axiosInstance.post("api/auth/login", {
-        email: payload.email,
-        password: payload.password,
-      });
-
-      alert("Register success");
-      router.push("/");
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        alert(error.response?.data);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return { login, isLoading };
+  return useMutation({
+    mutationFn: async (payload: LoginPayload) => {
+      const { data } = await axiosInstance.post("/api/auth/login", payload);
+      return data;
+    },
+    onSuccess: async (data) => {
+      await signIn('credentials',{...data,redirect: false});
+      router.replace("/")
+    },
+    onError: (error: AxiosError<any>) => {
+      toast.error(error.response?.data);
+    },
+  });
 };
 
 export default useLogin;
