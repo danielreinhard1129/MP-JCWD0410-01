@@ -10,14 +10,14 @@ import UpcomingEvent from "./component/UpcomingEvent";
 const words = `Live the Moment, Love the Experience`;
 
 const Homepage = () => {
-  const session = useSession()
+  // const session = useSession()
   return (
     <>
       <Jumbotron />
       <UpcomingEvent />
       <TopEvent />
       <Category />
-      {session.data?.user.name}
+      {/* {session.data?.user.name} */}
     </>
   );
 };
