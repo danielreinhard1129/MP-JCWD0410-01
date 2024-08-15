@@ -5,8 +5,10 @@ import Link from "next/link";
 import { IoSearch, IoMenu, IoClose } from "react-icons/io5";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 export const Navbar = () => {
+  const { data: session } = useSession();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenSearch, setIsOpenSearch] = useState(false);
 
@@ -24,12 +26,12 @@ export const Navbar = () => {
     { name: "FAQ", href: "/contact" },
   ];
 
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  const isPathname = pathname === "/login" || pathname === "/register"
+  const isPathname = pathname === "/login" || pathname === "/register";
 
   if (isPathname) {
-    return null
+    return null;
   }
 
   return (
@@ -75,22 +77,40 @@ export const Navbar = () => {
               ))}
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div className="col-span-1">
-                <Link
-                  href="/register"
-                  className="w-full rounded-md border-[1px] border-color2 px-4 py-2 text-color2"
-                >
-                  Sign Up
-                </Link>
-              </div>
-              <div className="col-span-1">
-                <Link
-                  href="/login"
-                  className="w-full rounded-md border-[1px] border-color2 bg-color2 px-6 py-2 text-white"
-                >
-                  Login
-                </Link>
-              </div>
+              {session?.user ? (
+                <>
+                  <div className="col-span-2 flex items-center gap-4">
+                    <Link href="/profile" className="text-color2">
+                      {session.user.name}
+                    </Link>
+                    <button
+                      onClick={() => signOut()}
+                      className="w-full rounded-md border-[1px] border-color2 bg-color2 px-4 py-2 text-white"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="col-span-1">
+                    <Link
+                      href="/register"
+                      className="w-full rounded-md border-[1px] border-color2 px-4 py-2 text-color2"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                  <div className="col-span-1">
+                    <Link
+                      href="/login"
+                      className="w-full rounded-md border-[1px] border-color2 bg-color2 px-6 py-2 text-white"
+                    >
+                      Login
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -118,7 +138,7 @@ export const Navbar = () => {
       </div>
 
       {isOpenSearch && (
-        <div className="md:hiden w-full items-center gap-4 p-4 text-sm">
+        <div className="md:hidden w-full items-center gap-4 p-4 text-sm">
           <label className="relative block">
             <span className="sr-only">Search</span>
             <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-color2 px-3">
@@ -137,22 +157,42 @@ export const Navbar = () => {
       {isOpenMenu && (
         <div className="h-screen border-t border-slate-200 bg-white text-black md:hidden">
           <div className="flex flex-col gap-2 p-4">
-            <div className="text-lg font-semibold">Masuk ke Akunmu</div>
-            <div>Untuk menggunakan semua fitur di Loket</div>
-            <div className="grid w-full grid-cols-2 gap-2 border-b-[1px] pb-8 text-center">
-              <Link
-                href="/register"
-                className="w-ful rounded-md border border-color2 px-4 py-2 text-color2"
-              >
-                Daftar
-              </Link>
-              <Link
-                href="/login"
-                className="w-ful rounded-md bg-color2 px-4 py-2 text-white"
-              >
-                Masuk
-              </Link>
-            </div>
+            {session?.user ? (
+              <>
+                <div className="text-lg font-semibold">Akun Saya</div>
+                <Link
+                  href="/profile"
+                  className="hover:text-button"
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={() => signOut()}
+                  className="w-full mt-2 rounded-md bg-color2 px-4 py-2 text-white"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="text-lg font-semibold">Masuk ke Akunmu</div>
+                <div>Untuk menggunakan semua fitur di Loket</div>
+                <div className="grid w-full grid-cols-2 gap-2 border-b-[1px] pb-8 text-center">
+                  <Link
+                    href="/register"
+                    className="w-ful rounded-md border border-color2 px-4 py-2 text-color2"
+                  >
+                    Daftar
+                  </Link>
+                  <Link
+                    href="/login"
+                    className="w-ful rounded-md bg-color2 px-4 py-2 text-white"
+                  >
+                    Masuk
+                  </Link>
+                </div>
+              </>
+            )}
             <div className="flex w-full flex-col gap-4 pt-4">
               {menuItems.map((item) => (
                 <Link

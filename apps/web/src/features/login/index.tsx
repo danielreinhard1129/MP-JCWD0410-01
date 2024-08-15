@@ -3,25 +3,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { values } from "cypress/types/lodash";
 import { useFormik } from "formik";
 import { LoginSchema } from "./schemas/LoginSchema";
 import useLogin from "@/hooks/api/auth/useLogin";
 import Link from "next/link";
 
 const LoginPage = () => {
+  const { mutateAsync: login, isPending } = useLogin();
 
-  const {login,isLoading} = useLogin()
-    const formik = useFormik({
-        initialValues:{
-            email: "",
-            password: "",
-        },
-        validationSchema: LoginSchema,
-        onSubmit : async (values)=>{
-            await login(values)
-        }
-    })
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: LoginSchema,
+    onSubmit: async (values) => {
+      await login(values);
+    },
+  });
+
   return (
     <div>
       <main className="flex justify-center pt-20">
@@ -42,9 +42,8 @@ const LoginPage = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-
-                  {!!formik.touched.email && !!formik.errors.email ? (
-                    <p className="text-x5 text-red-500">
+                  {formik.touched.email && formik.errors.email ? (
+                    <p className="text-xs text-red-500">
                       {formik.errors.email}
                     </p>
                   ) : null}
@@ -59,23 +58,25 @@ const LoginPage = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-
-                  {!!formik.touched.password && !!formik.errors.password ? (
-                    <p className="text-x5 text-red-500">
+                  {formik.touched.password && formik.errors.password ? (
+                    <p className="text-xs text-red-500">
                       {formik.errors.password}
                     </p>
                   ) : null}
                 </div>
-                <Link href = {"/forgot-password"}>
-                <p className="text-right">Forgot Password?</p>
+                <Link href="/forgot-password">
+                  <p className="text-right">Forgot Password?</p>
                 </Link>
               </div>
-              <Button className="mt-6 w-full bg-blue-500" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Submit"}
+              <Button
+                className="mt-6 w-full bg-blue-500"
+                disabled={isPending}
+              >
+                {isPending ? "Loading..." : "Submit"}
               </Button>
 
-              <Link href={"/register"} className="mt-4 flex justify-center text-xs">
-              Doesn't have account? Register here
+              <Link href="/register" className="mt-4 flex justify-center text-xs">
+                Don't have an account? Register here
               </Link>
             </form>
           </CardContent>

@@ -1,12 +1,14 @@
-import RegisterPage from '@/features/register'
-import React from 'react'
+import RegisterPage from "@/features/register";
+// import { auth } from "@/lib/auth";
+// import { redirect } from "next/navigation";
+import React from "react";
 
-const Register = () => {
-  return (
-    <div>
-        <RegisterPage/>
-    </div>
-  )
-}
+const Register = async () => {
+  // const session = await auth();
 
-export default Register
+  // if (!session) return redirect("/");
+
+  return <RegisterPage />;
+};
+
+export default Register;
