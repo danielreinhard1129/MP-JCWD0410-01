@@ -14,7 +14,7 @@ export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
     });
 
     if (!user) {
-      throw new Error('invalid email address');
+      throw new Error('Invalid email address');
     }
 
     const isPasswordValid = await comparePassword(password!, user.password!);
@@ -29,7 +29,8 @@ export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
 
     const { password: pass, ...userWithoutPassword } = user;
 
-    return { ...userWithoutPassword, token };
+    // Mengembalikan data user termasuk role
+    return { ...userWithoutPassword, token, role: user.role };
   } catch (error) {
     throw error;
   }

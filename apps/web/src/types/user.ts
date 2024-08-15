@@ -1,11 +1,12 @@
-export interface User{
+export interface User {
     id: number;
-    name: string
-    email: string
-    provider: string
+    name: string;
+    email: string;
+    provider: string;
+    role: 'ADMIN' | 'CUSTOMER'; // Tambahkan role di sini
 }
 
-enum Provider{
+export enum Provider {
     CREDENTIALS = "CREDENTIALS",
     GOOGLE = "GOOGLE",
 }
