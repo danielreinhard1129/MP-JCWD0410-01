@@ -1,5 +1,5 @@
-import { Event } from "@/features/events/types";
 import { axiosInstance } from "@/lib/axios";
+import { Event } from "@/types/event";
 import { IPageableResponse, IPagintaionQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 

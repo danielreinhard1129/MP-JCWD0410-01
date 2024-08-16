@@ -41,20 +41,24 @@ const EventCard: FC<EventCardProps> = ({
             <Image
               src={thumbnail}
               alt="concert"
-              layout="fill"
-              className="absolute inset-0 h-full w-full object-cover"
+              fill
+              className="absolute inset-0 object-cover"
             />
           </div>
           <div className="flex flex-col gap-2 p-5">
             <div className="text-md font-semibold">{name}</div>
-            <div className="flex items-center gap-2 text-sm">
-              <MdDateRange className="text-color2 text-opacity-50" />
-              <div className="text-neutral-500">
+            <div className="flex items-center gap-2">
+              <div className="rounded bg-neutral-100 p-2">
+                <MdDateRange className="text-sm text-color2 text-opacity-60" />
+              </div>
+              <div className="text-sm text-neutral-500">
                 {`${format(new Date(start_date), "dd MMM yyyy")} - ${format(new Date(end_date), "dd MMM yyyy")}`}
               </div>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <FaLocationDot className="text-color2 text-opacity-50" />
+              <div className="rounded bg-neutral-100 p-2">
+                <FaLocationDot className="text-sm text-color2 text-opacity-60" />
+              </div>
               <div className="text-neutral-500">
                 {" "}
                 {location.charAt(0).toUpperCase() +
@@ -69,7 +73,7 @@ const EventCard: FC<EventCardProps> = ({
                 maximumFractionDigits: 0,
               }).format(price)}
             </div>
-            <div className="flex items-center gap-2 border-t-[1px] border-neutral-200 pt-3 text-sm">
+            <div className="flex items-center gap-2 border-t-[1px] border-dashed border-neutral-200 pt-3 text-sm">
               <div className="relative h-10 w-10 overflow-hidden rounded-full border-[1px] border-neutral-200">
                 <Image
                   src="/logoevent.png"

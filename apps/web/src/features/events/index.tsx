@@ -133,11 +133,14 @@ const EventPage = () => {
           })}
         </div>
 
-        <Pagination
-          total={data?.meta?.total || 0}
-          limit={data?.meta?.take || 0}
-          onChangePage={onChangePage}
-        />
+        <div className="flex justify-center">
+          <Pagination
+            total={data?.meta?.total || 0}
+            limit={data?.meta?.take || 0}
+            onChangePage={onChangePage}
+            page={page}
+          />
+        </div>
       </div>
     </div>
   );

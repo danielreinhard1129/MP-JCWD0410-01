@@ -1,7 +1,6 @@
 import EventCard from "@/components/EventCard";
 import useGetEvents from "@/hooks/api/event/useGetEvents";
 import Link from "next/link";
-import Marquee from "react-fast-marquee";
 import { IoIosArrowForward } from "react-icons/io";
 
 const UpcomingEvent = () => {

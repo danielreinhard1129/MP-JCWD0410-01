@@ -12,8 +12,8 @@ const Footer = () => {
   return (
     <div className="bg-color1 text-sm text-white">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="grid grid-cols-1 gap-8 border-b-black py-8 sm:grid-cols-2 md:grid-cols-5">
-          <Link href="/" className="sm:cols-span-2">
+        <div className="grid grid-cols-2 gap-8 border-b-black py-8 md:grid-cols-5">
+          <Link href="/" className="col-span-2 md:col-span-1">
             <div className="relative h-10 w-28 overflow-hidden">
               <Image
                 src="/logo-white.png"

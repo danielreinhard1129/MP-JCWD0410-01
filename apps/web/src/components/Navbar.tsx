@@ -5,6 +5,7 @@ import Link from "next/link";
 import { IoSearch, IoMenu, IoClose } from "react-icons/io5";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import Autocomplete from "./Autocomplete";
 
 export const Navbar = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -12,10 +13,12 @@ export const Navbar = () => {
 
   const toggleMenu = () => {
     setIsOpenMenu(!isOpenMenu);
+    setIsOpenSearch(false);
   };
 
   const toggleSearch = () => {
     setIsOpenSearch(!isOpenSearch);
+    setIsOpenMenu(false);
   };
 
   const pathname = usePathname();
@@ -43,6 +46,11 @@ export const Navbar = () => {
         <div
           className={`hidden w-48 items-center gap-4 text-sm sm:w-80 md:inline-block md:w-5/12 ${pathname === "/events" ? "md:hidden" : ""}`}
         >
+          <Autocomplete />
+        </div>
+        {/* <div
+          className={`hidden w-48 items-center gap-4 text-sm sm:w-80 md:inline-block md:w-5/12 ${pathname === "/events" ? "md:hidden" : ""}`}
+        >
           <label className="relative block">
             <span className="sr-only">Search</span>
             <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-color2 px-3">
@@ -55,7 +63,7 @@ export const Navbar = () => {
               name="search"
             />
           </label>
-        </div>
+        </div> */}
 
         <div className="hidden items-center gap-4 text-sm md:flex">
           <div className="flex items-center gap-3">
@@ -101,6 +109,7 @@ export const Navbar = () => {
               )}
             </button>
           </div>
+
           <div className="flex items-center md:hidden">
             <button onClick={toggleMenu}>
               {isOpenMenu ? (
@@ -114,19 +123,25 @@ export const Navbar = () => {
       </div>
 
       {isOpenSearch && (
-        <div className="md:hiden w-full items-center gap-4 p-4 text-sm">
-          <label className="relative block">
-            <span className="sr-only">Search</span>
-            <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-color2 px-3">
-              <IoSearch className="text-white" />
-            </span>
-            <input
-              className="block w-full rounded-md border-[1px] border-neutral-300 bg-neutral-100 py-2 pl-3 pr-3 text-sm shadow-sm placeholder:text-sm placeholder:text-neutral-400 focus:border-color1 focus:bg-white focus:outline-none"
-              placeholder="Cari event"
-              type="text"
-              name="search"
-            />
-          </label>
+        // <div className="md:hiden w-full items-center gap-4 p-4 text-sm">
+        //   <label className="relative block">
+        //     <span className="sr-only">Search</span>
+        //     <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-color2 px-3">
+        //       <IoSearch className="text-white" />
+        //     </span>
+        //     <input
+        //       className="block w-full rounded-md border-[1px] border-neutral-300 bg-neutral-100 py-2 pl-3 pr-3 text-sm shadow-sm placeholder:text-sm placeholder:text-neutral-400 focus:border-color1 focus:bg-white focus:outline-none"
+        //       placeholder="Cari event"
+        //       type="text"
+        //       name="search"
+        //     />
+        //   </label>
+        // </div>
+
+        <div
+          className={`w-full p-4 md:hidden ${pathname === "/events" ? "md:hidden" : ""}`}
+        >
+          <Autocomplete />
         </div>
       )}
 
