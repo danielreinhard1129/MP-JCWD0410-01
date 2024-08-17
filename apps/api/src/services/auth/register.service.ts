@@ -1,8 +1,8 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { User } from '@prisma/client';
 import prisma from '../../prisma';
 import { hashPassword } from '@/lib/bcrypt';
 
-export const registerService = async (body: Prisma.UserCreateInput) => {
+export const registerService = async (body: User) => {
   try {
     const { name, email, password, role } = body;
 
@@ -11,8 +11,9 @@ export const registerService = async (body: Prisma.UserCreateInput) => {
     });
 
     if (existingUser) {
-      throw new Error("Email already exist");
+      throw new Error('Email already exist');
     }
+    // TODO: create logic referral here
 
     // Hash the password
     const hashedPassword = await hashPassword(password!);
@@ -23,6 +24,7 @@ export const registerService = async (body: Prisma.UserCreateInput) => {
         email,
         password: hashedPassword,
         role,
+        referral: '', // TODO: add referral value here
       },
     });
 

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { RegisterSchema } from "./schemas/RegisterSchema";
 import useRegister from "@/hooks/api/auth/useRegister";
+import Image from "next/image";
 
 const RegisterPage = () => {
   const { register, isLoading } = useRegister();
@@ -27,16 +28,22 @@ const RegisterPage = () => {
   });
 
   return (
-    <main className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden w-2/3">
-        <div 
-          className="w-1/2 bg-cover bg-center"
-          style={{ backgroundImage: "url('/festival.png')" }} // Pastikan path ini benar
-        />
+    <main className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="flex w-2/3 overflow-hidden rounded-lg bg-white shadow-lg">
+        <div className="relative w-1/2 overflow-hidden">
+          <Image
+            src="/concert.avif"
+            alt="Festival Picture"
+            fill
+            className="object-cover"
+          />
+        </div>
         <div className="w-1/2 p-8">
           <CardHeader className="mb-6">
             <CardTitle className="text-2xl font-bold">Join Us Today</CardTitle>
-            <p className="text-sm text-gray-600">Enter your email and password to register.</p>
+            <p className="text-sm text-gray-600">
+              Enter your email and password to register.
+            </p>
           </CardHeader>
           <CardContent>
             <form onSubmit={formik.handleSubmit}>
@@ -66,7 +73,9 @@ const RegisterPage = () => {
                     onBlur={formik.handleBlur}
                   />
                   {!!formik.touched.email && !!formik.errors.email ? (
-                    <p className="text-xs text-red-500">{formik.errors.email}</p>
+                    <p className="text-xs text-red-500">
+                      {formik.errors.email}
+                    </p>
                   ) : null}
                 </div>
                 <div className="flex flex-col space-y-1.5">
@@ -80,7 +89,9 @@ const RegisterPage = () => {
                     onBlur={formik.handleBlur}
                   />
                   {!!formik.touched.password && !!formik.errors.password ? (
-                    <p className="text-xs text-red-500">{formik.errors.password}</p>
+                    <p className="text-xs text-red-500">
+                      {formik.errors.password}
+                    </p>
                   ) : null}
                 </div>
                 <div className="flex flex-col space-y-1.5">
@@ -90,20 +101,28 @@ const RegisterPage = () => {
                     value={formik.values.role}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className="border border-gray-300 rounded p-2"
+                    className="rounded border border-gray-300 p-2"
                   >
                     <option value="CUSTOMER">Customer</option>
                     <option value="ADMIN">Admin</option>
                   </select>
                 </div>
               </div>
-              <Button className="mt-6 w-full bg-black text-white" disabled={isLoading}>
+              <Button
+                className="mt-6 w-full bg-black text-white"
+                disabled={isLoading}
+              >
                 {isLoading ? "Loading..." : "Register Now"}
               </Button>
             </form>
           </CardContent>
           <div className="mt-4 flex justify-center text-xs">
-            <p>Already have an account? <a href="/login" className="text-blue-500">Sign in</a></p>
+            <p>
+              Already have an account?{" "}
+              <a href="/login" className="text-blue-500">
+                Sign in
+              </a>
+            </p>
           </div>
         </div>
       </div>

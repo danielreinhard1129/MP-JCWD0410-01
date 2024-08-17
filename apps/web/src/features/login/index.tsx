@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { LoginSchema } from "./schemas/LoginSchema";
 import useLogin from "@/hooks/api/auth/useLogin";
 import Link from "next/link";
+import Image from "next/image";
 
 const LoginPage = () => {
   const { mutateAsync: login, isPending } = useLogin();
@@ -23,16 +24,22 @@ const LoginPage = () => {
   });
 
   return (
-    <main className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden w-2/3">
-        <div
-          className="w-1/2 bg-cover bg-center"
-          style={{ backgroundImage: "url('/festival.png')" }} // Pastikan path ini benar
-        />
+    <main className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="flex w-2/3 overflow-hidden rounded-lg bg-white shadow-lg">
+        <div className="relative w-1/2 overflow-hidden">
+          <Image
+            src="/concert.avif"
+            alt="Festival Picture"
+            fill
+            className="object-cover"
+          />
+        </div>
         <div className="w-1/2 p-8">
           <CardHeader className="mb-6">
             <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
-            <p className="text-sm text-gray-600">Enter your email and password to Sign In.</p>
+            <p className="text-sm text-gray-600">
+              Enter your email and password to Sign In.
+            </p>
           </CardHeader>
           <CardContent>
             <form onSubmit={formik.handleSubmit}>
@@ -69,15 +76,14 @@ const LoginPage = () => {
                     </p>
                   ) : null}
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id="terms"
-                      className="mr-2"
-                    />
+                    <input type="checkbox" id="terms" className="mr-2" />
                     <label htmlFor="terms" className="text-sm text-gray-600">
-                      I agree the <a href="#" className="text-blue-500">Terms and Conditions</a>
+                      I agree the{" "}
+                      <a href="#" className="text-blue-500">
+                        Terms and Conditions
+                      </a>
                     </label>
                   </div>
                   <Link href="/forgot-password">
@@ -92,37 +98,34 @@ const LoginPage = () => {
                 {isPending ? "Loading..." : "SIGN IN"}
               </Button>
 
-              <div className="flex justify-between items-center mt-4">
+              <div className="mt-4 flex items-center justify-between">
                 <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="newsletter"
-                    className="mr-2"
-                  />
+                  <input type="checkbox" id="newsletter" className="mr-2" />
                   <label htmlFor="newsletter" className="text-sm text-gray-600">
                     Subscribe me to newsletter
                   </label>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between mt-4">
-                <Button
-                  className="w-full bg-white border border-gray-300 text-gray-600"
-                >
+              <div className="mt-4 flex items-center justify-between">
+                <Button className="w-full border border-gray-300 bg-white text-gray-600">
                   SIGN IN WITH GOOGLE
                 </Button>
               </div>
 
-              <div className="flex items-center justify-between mt-4">
-                <Button
-                  className="w-full bg-white border border-gray-300 text-gray-600"
-                >
+              <div className="mt-4 flex items-center justify-between">
+                <Button className="w-full border border-gray-300 bg-white text-gray-600">
                   SIGN IN WITH TWITTER
                 </Button>
               </div>
 
-              <div className="flex justify-center text-xs mt-4">
-                <p>Not registered? <Link href="/register" className="text-blue-500">Create account</Link></p>
+              <div className="mt-4 flex justify-center text-xs">
+                <p>
+                  Not registered?{" "}
+                  <Link href="/register" className="text-blue-500">
+                    Create account
+                  </Link>
+                </p>
               </div>
             </form>
           </CardContent>

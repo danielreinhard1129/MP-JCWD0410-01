@@ -58,6 +58,9 @@ const config = {
         color2: {
           DEFAULT: "#602e9d",
         },
+        color3: {
+          DEFAULT: "#56298d",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -9,7 +9,7 @@ const Jumbotron = () => {
       <Image
         src="/concert.avif"
         alt="concert"
-        layout="fill"
+        fill
         className="absolute inset-0 h-full w-full object-cover opacity-70"
       />
 

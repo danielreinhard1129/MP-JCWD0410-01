@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 interface User {
   id: number;
   email: string;
-  role: 'ADMIN' | 'CUSTOMER';
+  role: "ADMIN" | "CUSTOMER";
 }
 
 const loggedOutRoutes = [
@@ -19,7 +19,7 @@ export default auth((req) => {
   const user = req.auth?.user as User | undefined; // Casting ke tipe User
 
   const isLoggedOutRoute = loggedOutRoutes.some((route) =>
-    pathname.startsWith(route)
+    pathname.startsWith(route),
   );
 
   // Redirect unauthenticated users to login if they are accessing private routes
@@ -35,12 +35,12 @@ export default auth((req) => {
   }
 
   // Izinkan admin mengakses dashboard
-  if (user?.role === 'ADMIN' && pathname === '/dashboard') {
+  if (user?.role === "ADMIN" && pathname === "/dashboard") {
     return NextResponse.next();
   }
 
   // Prevent customers from accessing dashboard
-  if (user?.role === 'CUSTOMER' && pathname === '/dashboard') {
+  if (user?.role === "CUSTOMER" && pathname === "/dashboard") {
     const newUrl = new URL("/", req.nextUrl.origin);
     return NextResponse.redirect(newUrl);
   }

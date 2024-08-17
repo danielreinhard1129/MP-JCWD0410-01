@@ -15,6 +15,8 @@ const useRegister = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const register = async (payload: RegisterArgs) => {
+    console.log(payload);
+
     setIsLoading(true);
     try {
       await axiosInstance.post("api/auth/register", {

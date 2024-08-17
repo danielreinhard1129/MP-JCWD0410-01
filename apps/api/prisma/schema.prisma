@@ -26,15 +26,24 @@ enum Role {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String?
-  role      Role
-  provider  Provider @default(CREDENTIALS)
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
-  blogs     Blog[]
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  role         Role
+  profilePic   String?
+  address      String?
+  phone_number String?
+  referral     String
+  provider     Provider      @default(CREDENTIALS)
+  createdAt    DateTime      @default(now())
+  updateAt     DateTime      @updatedAt
+  userPoints   UserPoint[]
+  userRewards  UserReward[]
+  userVouchers UserVoucher[]
+  events       Event[]
+  reviews      Review[]
+  transactions Transaction[]
 
   @@map("User")
 }
@@ -44,17 +53,157 @@ enum Provider {
   CREDENTIALS
 }
 
-model Blog {
+model UserPoint {
+  id        Int      @id @default(autoincrement())
+  points    Int      @default(0)
+  exp_date  DateTime
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("user_points")
+}
+
+model UserReward {
+  id       Int     @id @default(autoincrement())
+  userId   Int
+  rewardId Int
+  isUsed   Boolean @default(false)
+
+  reward Reward @relation(fields: [rewardId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("user_rewards")
+}
+
+model Reward {
+  id          Int          @id @default(autoincrement())
+  name        String
+  code        String       @unique
+  quota       Int
+  nominal     Int
+  claimed     Int          @default(0)
+  exp_date    DateTime
+  createdAt   DateTime     @default(now())
+  updateAt    DateTime     @updatedAt
+  userRewards UserReward[]
+
+  @@map("rewards")
+}
+
+model UserVoucher {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  voucherId Int
+  isUsed    Boolean @default(false)
+
+  user    User    @relation(fields: [userId], references: [id])
+  voucher Voucher @relation(fields: [voucherId], references: [id])
+
+  @@map("user_vouchers")
+}
+
+model Voucher {
+  id           Int           @id @default(autoincrement())
+  eventId      Int
+  name         String
+  code         String        @unique
+  quota        Int
+  nominal      Int
+  claimed      Int           @default(0)
+  exp_date     DateTime
+  createdAt    DateTime      @default(now())
+  updateAt     DateTime      @updatedAt
+  userVouchers UserVoucher[]
+  event        Event         @relation(fields: [eventId], references: [id])
+
+  @@map("vouchers")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  eventId   Int
+  comment   String
+  rating    Int
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
+  @@map("reviews")
+}
+
+model Event {
   id          Int      @id @default(autoincrement())
-  title       String   @unique
-  description String   @db.LongText()
-  category    String
-  content     String   @db.LongText()
+  categoryId  Int
+  name        String
   thumbnail   String
+  description String
+  location    String
+  start_date  DateTime
+  end_date    DateTime
+  price       Int
+  discount    Int      @default(0)
+  quota       Int
+  booked      Int
   userId      Int
-  user        User     @relation(fields: [userId], references: [id])
+  isDeleted   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updateAt    DateTime @updatedAt
 
-  @@map("blogs")
+  user         User          @relation(fields: [userId], references: [id])
+  category     Category      @relation(fields: [categoryId], references: [id])
+  vouchers     Voucher[]
+  reviews      Review[]
+  transactions Transaction[]
+
+  @@map("events")
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  events    Event[]
+
+  @@map("categories")
+}
+
+model Transaction {
+  id             Int           @id @default(autoincrement())
+  userId         Int
+  eventId        Int
+  qty            Int
+  total          Int
+  status         Status
+  payment_proof  String?
+  payment_method PaymentMethod
+  point_used     Int           @default(0)
+  voucher_used   Int           @default(0)
+  reward_used    Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updateAt       DateTime      @updatedAt
+  user           User          @relation(fields: [userId], references: [id])
+  event          Event         @relation(fields: [eventId], references: [id])
+
+  @@map("transactions")
+}
+
+enum Status {
+  WAIITNG_FOR_PAYMENT
+  WAITING_FOR_ADMIN_CONFIRMATION
+  DONE
+  REJECTED
+  EXPIRED
+  CANCELED
+}
+
+enum PaymentMethod {
+  BCA
+  BRI
+  MANDIRI
 }

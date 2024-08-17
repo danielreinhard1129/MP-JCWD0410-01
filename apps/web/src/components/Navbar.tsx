@@ -2,10 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { IoSearch, IoMenu, IoClose } from "react-icons/io5";
+import { IoSearch, IoMenu, IoClose, IoPerson } from "react-icons/io5";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import Autocomplete from "./Autocomplete";
 import { useSession, signOut } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { MdLogout } from "react-icons/md";
 
 export const Navbar = () => {
   const { data: session } = useSession();
@@ -14,10 +24,12 @@ export const Navbar = () => {
 
   const toggleMenu = () => {
     setIsOpenMenu(!isOpenMenu);
+    setIsOpenSearch(false);
   };
 
   const toggleSearch = () => {
     setIsOpenSearch(!isOpenSearch);
+    setIsOpenMenu(false);
   };
 
   const menuItems = [
@@ -38,39 +50,30 @@ export const Navbar = () => {
     <div className="sticky top-0 z-50 w-full border-b-[1px] border-neutral-300 bg-[#fbfbfb] text-color1">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-4">
         <Link href="/">
-          <div className="relative h-12 w-32 overflow-hidden">
+          <div className="relative h-10 w-28 overflow-hidden">
             <Image
               src="/logo-purple.png"
               alt="concert"
-              layout="fill"
+              fill
               className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </Link>
 
-        <div className="hidden w-48 items-center gap-4 text-sm sm:w-80 md:inline-block md:w-5/12">
-          <label className="relative block">
-            <span className="sr-only">Search</span>
-            <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-color2 px-3">
-              <IoSearch className="text-white" />
-            </span>
-            <input
-              className="block w-full rounded-md border-[1px] border-neutral-300 bg-neutral-100 py-1 pl-3 pr-3 shadow-sm placeholder:text-sm placeholder:text-neutral-400 focus:border-color1 focus:bg-white focus:outline-none sm:py-2 sm:text-sm"
-              placeholder="Cari event"
-              type="text"
-              name="search"
-            />
-          </label>
+        <div
+          className={`hidden w-48 items-center gap-4 text-sm sm:w-80 md:inline-block md:w-5/12 ${pathname === "/events" ? "md:hidden" : ""}`}
+        >
+          <Autocomplete />
         </div>
 
         <div className="hidden items-center gap-4 text-sm md:flex">
-          <div className="flex items-center gap-3">
-            <div className="flex gap-3">
+          <div className="flex items-center gap-8">
+            <div className="flex gap-8">
               {menuItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="rounded-md px-4 py-2 hover:text-[#896eb3]"
+                  className="rounded-md hover:text-[#896eb3]"
                 >
                   {item.name}
                 </Link>
@@ -79,8 +82,8 @@ export const Navbar = () => {
             <div className="grid grid-cols-2 gap-3">
               {session?.user ? (
                 <>
-                  <div className="col-span-2 flex items-center gap-4">
-                    <Link href="/profile" className="text-color2">
+                  <div className="col-span-2">
+                    {/* <Link href="/profile" className="text-color2">
                       {session.user.name}
                     </Link>
                     <button
@@ -88,7 +91,43 @@ export const Navbar = () => {
                       className="w-full rounded-md border-[1px] border-color2 bg-color2 px-4 py-2 text-white"
                     >
                       Logout
-                    </button>
+                    </button> */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="rounded-full border-[1px] p-2.5 hover:border-color2">
+                        <IoPerson />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-52">
+                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <Link
+                            href="/profile"
+                            className="w-full hover:text-color2"
+                          >
+                            Profile
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Link
+                            href="/profile"
+                            className="w-full hover:text-color2"
+                          >
+                            My Ticket
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <button
+                            onClick={() => signOut()}
+                            className="flex w-full items-center justify-between hover:text-color2"
+                          >
+                            <div>Log Out</div>
+
+                            <MdLogout size={18} />
+                          </button>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </>
               ) : (
@@ -125,6 +164,7 @@ export const Navbar = () => {
               )}
             </button>
           </div>
+
           <div className="flex items-center md:hidden">
             <button onClick={toggleMenu}>
               {isOpenMenu ? (
@@ -138,19 +178,10 @@ export const Navbar = () => {
       </div>
 
       {isOpenSearch && (
-        <div className="md:hidden w-full items-center gap-4 p-4 text-sm">
-          <label className="relative block">
-            <span className="sr-only">Search</span>
-            <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-color2 px-3">
-              <IoSearch className="text-white" />
-            </span>
-            <input
-              className="block w-full rounded-md border-[1px] border-neutral-300 bg-neutral-100 py-2 pl-3 pr-3 text-sm shadow-sm placeholder:text-sm placeholder:text-neutral-400 focus:border-color1 focus:bg-white focus:outline-none"
-              placeholder="Cari event"
-              type="text"
-              name="search"
-            />
-          </label>
+        <div
+          className={`w-full p-4 md:hidden ${pathname === "/events" ? "md:hidden" : ""}`}
+        >
+          <Autocomplete />
         </div>
       )}
 
@@ -160,15 +191,12 @@ export const Navbar = () => {
             {session?.user ? (
               <>
                 <div className="text-lg font-semibold">Akun Saya</div>
-                <Link
-                  href="/profile"
-                  className="hover:text-button"
-                >
+                <Link href="/profile" className="hover:text-button">
                   Profile
                 </Link>
                 <button
                   onClick={() => signOut()}
-                  className="w-full mt-2 rounded-md bg-color2 px-4 py-2 text-white"
+                  className="mt-2 w-full rounded-md bg-color2 px-4 py-2 text-white"
                 >
                   Logout
                 </button>
