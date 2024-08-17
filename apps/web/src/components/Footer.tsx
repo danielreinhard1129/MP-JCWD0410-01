@@ -1,5 +1,7 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   FaFacebook,
   FaInstagram,
@@ -9,6 +11,14 @@ import {
 } from "react-icons/fa6";
 
 const Footer = () => {
+  const pathname = usePathname();
+
+  const isPathname = pathname === "/login" || pathname === "/register";
+
+  if (isPathname) {
+    return null;
+  }
+
   return (
     <div className="bg-color1 text-sm text-white">
       <div className="mx-auto max-w-7xl px-4">
@@ -18,7 +28,7 @@ const Footer = () => {
               <Image
                 src="/logo-white.png"
                 alt="concert"
-                layout="fill"
+                fill
                 className="absolute inset-0 h-full w-full object-cover"
               />
             </div>

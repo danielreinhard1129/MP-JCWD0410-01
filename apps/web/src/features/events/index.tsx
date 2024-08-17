@@ -15,6 +15,7 @@ import useGetEvents from "@/hooks/api/event/useGetEvents";
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { debounce } from "lodash";
+import Link from "next/link";
 
 const EventPage = () => {
   const searchParams = useSearchParams();
@@ -67,7 +68,7 @@ const EventPage = () => {
 
   return (
     <div className="bg-[#fbfbfb]">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 pb-20 pt-8 sm:gap-8">
+      <div className="mx-auto max-w-7xl space-y-8 px-4 pb-20 pt-8 sm:gap-8">
         <div className="flex flex-col gap-2 sm:flex-row">
           <div className="text-sm">
             <input
@@ -119,16 +120,18 @@ const EventPage = () => {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
           {data?.data.map((event, index: number) => {
             return (
-              <EventCard
-                key={index}
-                name={event.name}
-                thumbnail={event.thumbnail}
-                location={event.location}
-                start_date={event.start_date}
-                end_date={event.end_date}
-                price={event.price}
-                organizer={event.user.name}
-              />
+              <Link href={`/events/${event.id}`} key={index}>
+                <EventCard
+                  key={index}
+                  name={event.name}
+                  thumbnail={event.thumbnail}
+                  location={event.location}
+                  start_date={event.start_date}
+                  end_date={event.end_date}
+                  price={event.price}
+                  organizer={event.user.name}
+                />
+              </Link>
             );
           })}
         </div>

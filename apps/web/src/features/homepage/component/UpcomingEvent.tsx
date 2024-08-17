@@ -28,16 +28,18 @@ const UpcomingEvent = () => {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
           {data?.data.map((event, index: number) => {
             return (
-              <EventCard
-                key={index}
-                name={event.name}
-                thumbnail={event.thumbnail}
-                location={event.location}
-                start_date={event.start_date}
-                end_date={event.end_date}
-                price={event.price}
-                organizer={event.user.name}
-              />
+              <Link href={`/events/${event.id}`} key={index}>
+                <EventCard
+                  key={index}
+                  name={event.name}
+                  thumbnail={event.thumbnail}
+                  location={event.location}
+                  start_date={event.start_date}
+                  end_date={event.end_date}
+                  price={event.price}
+                  organizer={event.user.name}
+                />
+              </Link>
             );
           })}
         </div>

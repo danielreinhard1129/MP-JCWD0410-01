@@ -1,5 +1,6 @@
 import EventCard from "@/components/EventCard";
 import useGetEvents from "@/hooks/api/event/useGetEvents";
+import Link from "next/link";
 import React from "react";
 import Marquee from "react-fast-marquee";
 
@@ -29,33 +30,22 @@ const TopEvent = () => {
         >
           {data?.data.map((event, index: number) => {
             return (
-              <EventCard
-                key={index}
-                name={event.name}
-                thumbnail={event.thumbnail}
-                location={event.location}
-                start_date={event.start_date}
-                end_date={event.end_date}
-                price={event.price}
-                organizer={event.user.name}
-                className="mr-4 text-left"
-                width="w-72"
-              />
+              <Link href={`/events/${event.id}`} key={index}>
+                <EventCard
+                  key={index}
+                  name={event.name}
+                  thumbnail={event.thumbnail}
+                  location={event.location}
+                  start_date={event.start_date}
+                  end_date={event.end_date}
+                  price={event.price}
+                  organizer={event.user.name}
+                  className="mr-4 text-left"
+                  width="w-72"
+                />
+              </Link>
             );
           })}
-
-          {/* <div className="mx-2">
-            <EventCard />
-          </div>
-          <div className="mx-2">
-            <EventCard />
-          </div>
-          <div className="mx-2">
-            <EventCard />
-          </div>
-          <div className="mx-2">
-            <EventCard />
-          </div> */}
         </Marquee>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { Roles, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import prisma from '../../prisma';
 import { hashPassword } from '@/lib/bcrypt';
 
@@ -23,8 +23,8 @@ export const registerService = async (body: User) => {
         name,
         email,
         password: hashedPassword,
-        referral: '', // TODO: add referral value here
         role,
+        referral: '', // TODO: add referral value here
       },
     });
 

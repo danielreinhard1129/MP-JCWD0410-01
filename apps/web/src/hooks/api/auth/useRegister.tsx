@@ -1,13 +1,13 @@
-"use client";
 import { axiosInstance } from "@/lib/axios";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface RegisterArgs {
   name: string;
   email: string;
   password: string;
+  role: "ADMIN" | "CUSTOMER"; // Tambahkan role di sini
 }
 
 const useRegister = () => {
@@ -15,12 +15,15 @@ const useRegister = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const register = async (payload: RegisterArgs) => {
+    console.log(payload);
+
     setIsLoading(true);
     try {
       await axiosInstance.post("api/auth/register", {
         name: payload.name,
         email: payload.email,
         password: payload.password,
+        role: payload.role, // Sertakan role di sini
       });
 
       alert("Register success");
@@ -33,7 +36,7 @@ const useRegister = () => {
       setIsLoading(false);
     }
   };
-  
+
   return { register, isLoading };
 };
 

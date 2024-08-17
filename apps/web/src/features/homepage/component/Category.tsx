@@ -44,7 +44,7 @@ const Category = () => {
                   <Image
                     src={item.src}
                     alt={item.alt}
-                    layout="fill"
+                    fill
                     className="absolute inset-0 h-full w-full rounded-md object-cover opacity-70"
                   />
 
