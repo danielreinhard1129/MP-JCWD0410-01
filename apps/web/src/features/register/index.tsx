@@ -16,13 +16,14 @@ const RegisterPage = () => {
       name: "",
       email: "",
       password: "",
-      role: "CUSTOMER" as "ADMIN" | "CUSTOMER", // Default value untuk role
+      role: "CUSTOMER" as "ADMIN" | "CUSTOMER", // Default value for role
+      referralCode: "", // Add referral code to initial values
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values) => {
       await register({
         ...values,
-        role: values.role as "ADMIN" | "CUSTOMER", // Perubahan tipe dari string ke tipe yang diharapkan
+        role: values.role as "ADMIN" | "CUSTOMER",
       });
     },
   });
@@ -106,6 +107,22 @@ const RegisterPage = () => {
                     <option value="CUSTOMER">Customer</option>
                     <option value="ADMIN">Admin</option>
                   </select>
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="referralCode">Referral Code (Optional)</Label>
+                  <Input
+                    name="referralCode"
+                    type="text"
+                    placeholder="Referral code (if any)"
+                    value={formik.values.referralCode}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {!!formik.touched.referralCode && !!formik.errors.referralCode ? (
+                    <p className="text-xs text-red-500">
+                      {formik.errors.referralCode}
+                    </p>
+                  ) : null}
                 </div>
               </div>
               <Button

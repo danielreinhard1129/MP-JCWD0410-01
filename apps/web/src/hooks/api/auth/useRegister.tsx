@@ -7,7 +7,8 @@ interface RegisterArgs {
   name: string;
   email: string;
   password: string;
-  role: "ADMIN" | "CUSTOMER"; // Tambahkan role di sini
+  role: "ADMIN" | "CUSTOMER";
+  referralCode?: string; // Add referralCode as an optional field
 }
 
 const useRegister = () => {
@@ -23,7 +24,8 @@ const useRegister = () => {
         name: payload.name,
         email: payload.email,
         password: payload.password,
-        role: payload.role, // Sertakan role di sini
+        role: payload.role,
+        referralCode: payload.referralCode || null, // Include referralCode if provided
       });
 
       alert("Register success");

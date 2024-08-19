@@ -14,4 +14,5 @@ export const RegisterSchema = Yup.object().shape({
   role: Yup.string()
     .oneOf(["ADMIN", "CUSTOMER"], "Invalid role")
     .required("Role is required"),
+  referralCode: Yup.string().nullable(), // Optional field
 });

@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
-import Link from 'next/link';
-import React, { useState } from 'react';
+import { useState } from "react";
+import Link from "next/link";
 
 interface MenuItem {
   title: string;
   icon: JSX.Element;
+  path?: string; // Add an optional path property
   submenu?: boolean;
   subMenuItems?: SubMenuItem[];
 }
@@ -15,9 +16,16 @@ interface SubMenuItem {
   path: string;
 }
 
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onMenuSelect: (title: string) => void; // Add this to notify the parent component about the selection
+}
+
 const menuItems: MenuItem[] = [
   {
-    title: 'Dashboard',
+    title: "Dashboard",
+    path: "/dashboard", // Add the path to the dashboard
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +43,7 @@ const menuItems: MenuItem[] = [
     ),
   },
   {
-    title: 'E-Commerce',
+    title: "Transaction",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -53,31 +61,14 @@ const menuItems: MenuItem[] = [
     ),
     submenu: true,
     subMenuItems: [
-      { title: 'Orders', path: '/orders' },
-      { title: 'Products', path: '/products' },
-      { title: 'Statistik', path: '/statistik' },
+      { title: "Voucher", path: "/voucher" },
+      { title: "Event", path: "/dashboard/transaction/eventpage" },
+      { title: "Statistik", path: "/statistik" },
     ],
   },
   {
-    title: 'Inbox',
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
-        className="w-5 h-5"
-      >
-        <path
-          fillRule="evenodd"
-          d="M6.912 3a3 3 0 00-2.868 2.118l-2.411 7.838a3 3 0 00-.133.882V18a3 3 0 003 3h15a3 3 0 003-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0017.088 3H6.912zm13.823 9.75l-2.213-7.191A1.5 1.5 0 0017.088 4.5H6.912a1.5 1.5 0 00-1.434 1.059L3.265 12.75H6.11a3 3 0 012.684 1.658l.256.513a1.5 1.5 0 001.342.829h3.218a1.5 1.5 0 001.342-.83l.256-.512a3 3 0 012.684-1.658h2.844z"
-          clipRule="evenodd"
-        ></path>
-      </svg>
-    ),
-  },
-  {
-    title: 'Profile',
+    title: "Profile",
+    path: "/profile", // Add the path to the profile page
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +86,8 @@ const menuItems: MenuItem[] = [
     ),
   },
   {
-    title: 'Settings',
+    title: "Settings",
+    path: "/settings", // Add the path to the settings page
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +105,8 @@ const menuItems: MenuItem[] = [
     ),
   },
   {
-    title: 'Log Out',
+    title: "Log Out",
+    path: "/logout", // Assuming you have a logout page or function
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -132,54 +125,83 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onMenuSelect }) => {
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
 
   const handleSubMenuToggle = (title: string) => {
     setOpenSubMenu(openSubMenu === title ? null : title);
   };
 
+  const handleMenuClick = (title: string) => {
+    onMenuSelect(title);
+    onClose();
+  };
+
   return (
-    <div className="fixed top-0 left-0 h-full w-64 bg-green-900 text-white shadow-lg">
-      <div className="p-4 mb-2">
+    <div
+      className={`fixed top-0 left-0 h-full w-64 bg-green-900 text-white shadow-lg transform ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      } transition-transform lg:translate-x-0 lg:relative lg:flex lg:flex-col`}
+    >
+      <div className="p-4 mb-2 flex justify-between items-center">
         <h5 className="block font-sans text-xl font-semibold leading-snug tracking-normal text-white">
           Sidebar
         </h5>
+        <button className="lg:hidden" onClick={onClose}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            className="w-5 h-5 text-white"
+          >
+            <path
+              fillRule="evenodd"
+              d="M6.293 6.293a1 1 0 011.414 0L12 10.586l4.293-4.293a1 1 0 111.414 1.414L13.414 12l4.293 4.293a1 1 0 01-1.414 1.414L12 13.414l-4.293 4.293a1 1 0 01-1.414-1.414L10.586 12 6.293 7.707a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            ></path>
+          </svg>
+        </button>
       </div>
       <nav className="flex flex-col flex-1 gap-1 p-2">
         {menuItems.map((item, idx) => (
           <div key={idx} className="relative">
-            <button
-              type="button"
-              className="flex items-center justify-between w-full p-3 font-sans text-xl font-semibold text-left transition-colors border-b-0 select-none text-white hover:text-green-400"
-              onClick={() => handleSubMenuToggle(item.title)}
-            >
-              <div className="grid mr-4 place-items-center">{item.icon}</div>
-              <p className="block mr-auto font-sans text-base font-normal text-white">
-                {item.title}
-              </p>
-              {item.submenu && (
-                <span className="ml-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    className={`w-4 h-4 transition-transform ${
-                      openSubMenu === item.title ? 'rotate-180' : ''
-                    }`}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                    ></path>
-                  </svg>
-                </span>
-              )}
-            </button>
+            <Link href={item.path ?? "#"} passHref>
+              <button
+                type="button"
+                className="flex items-center justify-between w-full p-3 font-sans text-xl font-semibold text-left transition-colors border-b-0 select-none text-white hover:text-green-400"
+                onClick={() => {
+                  handleSubMenuToggle(item.title);
+                  handleMenuClick(item.title);
+                }}
+              >
+                <div className="grid mr-4 place-items-center">{item.icon}</div>
+                <p className="block mr-auto font-sans text-base font-normal text-white">
+                  {item.title}
+                </p>
+                {item.submenu && (
+                  <span className="ml-4">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2.5"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                      className={`w-4 h-4 transition-transform ${
+                        openSubMenu === item.title ? "rotate-180" : ""
+                      }`}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                      ></path>
+                    </svg>
+                  </span>
+                )}
+              </button>
+            </Link>
             {item.submenu && openSubMenu === item.title && (
               <div className="overflow-hidden">
                 <div className="block w-full py-1 text-sm text-gray-200">
@@ -188,6 +210,7 @@ const Sidebar = () => {
                       key={subIdx}
                       href={subItem.path}
                       className="flex items-center w-full p-3 transition-all rounded-lg text-start hover:bg-green-700 hover:text-white"
+                      onClick={() => handleMenuClick(subItem.title)}
                     >
                       {subItem.title}
                     </Link>
