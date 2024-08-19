@@ -3,10 +3,10 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ReactQueryProvider from "@/Providers/ReactQueryProviders";
-import NextAuthProvider from "@/Providers/NextAuthProvider";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import NextAuthProvider from "@/providers/NextAuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
