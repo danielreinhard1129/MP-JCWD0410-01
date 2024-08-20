@@ -39,7 +39,15 @@ export const getEventsService = async (query: GetEventsService) => {
         [sortBy]: sortOrder,
       },
 
-      include: { user: { select: { name: true } } },
+      include: {
+        user: {
+          // join dengan user
+          select: {
+            name: true,
+            profilePic: true,
+          },
+        },
+      },
     });
     2;
 

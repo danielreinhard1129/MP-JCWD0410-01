@@ -28,7 +28,7 @@ const LoginPage = () => {
       <div className="flex flex-col md:flex-row w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
         <div className="relative w-full md:w-1/2 h-48 md:h-auto overflow-hidden">
           <Image
-            src="/concert.avif"
+            src="/images/concert.avif"
             alt="Festival Picture"
             fill
             className="object-cover"

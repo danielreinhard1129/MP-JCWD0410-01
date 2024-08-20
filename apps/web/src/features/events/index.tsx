@@ -16,6 +16,8 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { debounce } from "lodash";
 import Link from "next/link";
+import useGetCategories from "@/hooks/api/category/useGetCategories";
+import EventCardSkeleton from "@/components/EventCardSkeleton";
 
 const EventPage = () => {
   const searchParams = useSearchParams();
@@ -27,13 +29,15 @@ const EventPage = () => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [page, setPage] = useState(1);
 
-  const { data } = useGetEvents({
+  const { data, isPending } = useGetEvents({
     page,
     take: 8,
     search: searchValue,
     category: selectedCategory,
     location: selectedLocation,
   });
+
+  const { data: item } = useGetCategories();
 
   const onChangePage = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
@@ -92,10 +96,14 @@ const EventPage = () => {
                 <SelectGroup>
                   <SelectLabel>Category</SelectLabel>
                   <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="concert">Concert</SelectItem>
-                  <SelectItem value="sport">Sport</SelectItem>
-                  <SelectItem value="festival">Festival</SelectItem>
-                  <SelectItem value="attraction">Attraction</SelectItem>
+                  {item?.map((categories, index: number) => {
+                    return (
+                      <SelectItem value={categories.title} key={index}>
+                        {categories.title.charAt(0).toUpperCase() +
+                          categories.title.slice(1).toLowerCase()}
+                      </SelectItem>
+                    );
+                  })}
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -118,7 +126,15 @@ const EventPage = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-          {data?.data.map((event, index: number) => {
+          {isPending && (
+            <>
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+            </>
+          )}
+          {data?.data?.map((event, index: number) => {
             return (
               <Link href={`/events/${event.id}`} key={index}>
                 <EventCard
@@ -130,6 +146,7 @@ const EventPage = () => {
                   end_date={event.end_date}
                   price={event.price}
                   organizer={event.user.name}
+                  profilePic={event.user.profilePic}
                 />
               </Link>
             );

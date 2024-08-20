@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+import { MdLogout } from "react-icons/md";
 
 interface MenuItem {
   title: string;
@@ -32,7 +34,7 @@ const menuItems: MenuItem[] = [
         viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden="true"
-        className="w-5 h-5"
+        className="h-5 w-5"
       >
         <path
           fillRule="evenodd"
@@ -43,14 +45,14 @@ const menuItems: MenuItem[] = [
     ),
   },
   {
-    title: "Transaction",
+    title: "Event",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden="true"
-        className="w-5 h-5"
+        className="h-5 w-5"
       >
         <path
           fillRule="evenodd"
@@ -61,9 +63,11 @@ const menuItems: MenuItem[] = [
     ),
     submenu: true,
     subMenuItems: [
+      { title: "Event List", path: "/dashboard/event/eventpage" },
+      { title: "Event Category", path: "/dashboard/event/create-category" },
       { title: "Voucher", path: "/dashboard/transaction/voucher" },
-      { title: "Event", path: "/dashboard/transaction/eventpage" },
       { title: "Statistik", path: "/statistik" },
+      { title: "Transaction", path: "/transaction" },
     ],
   },
   {
@@ -75,7 +79,7 @@ const menuItems: MenuItem[] = [
         viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden="true"
-        className="w-5 h-5"
+        className="h-5 w-5"
       >
         <path
           fillRule="evenodd"
@@ -94,7 +98,7 @@ const menuItems: MenuItem[] = [
         viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden="true"
-        className="w-5 h-5"
+        className="h-5 w-5"
       >
         <path
           fillRule="evenodd"
@@ -104,28 +108,29 @@ const menuItems: MenuItem[] = [
       </svg>
     ),
   },
-  {
-    title: "Log Out",
-    path: "/logout", // Assuming you have a logout page or function
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
-        className="w-5 h-5"
-      >
-        <path
-          fillRule="evenodd"
-          d="M12 2.25a.75.75 0 01.75.75v9a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM6.166 5.106a.75.75 0 010 1.06 8.25 8.25 0 1011.668 0 .75.75 0 111.06-1.06c3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788a.75.75 0 011.06 0z"
-          clipRule="evenodd"
-        ></path>
-      </svg>
-    ),
-  },
+  // {
+  //   title: "Log Out",
+  //   path: "/logout", // Assuming you have a logout page or function
+  //   icon: (
+  //     <svg
+  //       xmlns="http://www.w3.org/2000/svg"
+  //       viewBox="0 0 24 24"
+  //       fill="currentColor"
+  //       aria-hidden="true"
+  //       className="h-5 w-5"
+  //     >
+  //       <path
+  //         fillRule="evenodd"
+  //         d="M12 2.25a.75.75 0 01.75.75v9a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM6.166 5.106a.75.75 0 010 1.06 8.25 8.25 0 1011.668 0 .75.75 0 111.06-1.06c3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788a.75.75 0 011.06 0z"
+  //         clipRule="evenodd"
+  //       ></path>
+  //     </svg>
+  //   ),
+  // },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onMenuSelect }) => {
+  const { data: session } = useSession();
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
 
   const handleSubMenuToggle = (title: string) => {
@@ -139,11 +144,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onMenuSelect }) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-full w-64 bg-green-900 text-white shadow-lg transform ${
+      className={`fixed left-0 top-0 h-full w-64 transform bg-color2 text-white shadow-lg ${
         isOpen ? "translate-x-0" : "-translate-x-full"
-      } transition-transform lg:translate-x-0 lg:relative lg:flex lg:flex-col`}
+      } transition-transform lg:relative lg:flex lg:translate-x-0 lg:flex-col`}
     >
-      <div className="p-4 mb-2 flex justify-between items-center">
+      <div className="mb-2 flex items-center justify-between p-4">
         <h5 className="block font-sans text-xl font-semibold leading-snug tracking-normal text-white">
           Sidebar
         </h5>
@@ -153,7 +158,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onMenuSelect }) => {
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden="true"
-            className="w-5 h-5 text-white"
+            className="h-5 w-5 text-white"
           >
             <path
               fillRule="evenodd"
@@ -163,20 +168,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onMenuSelect }) => {
           </svg>
         </button>
       </div>
-      <nav className="flex flex-col flex-1 gap-1 p-2">
+      <nav className="flex flex-1 flex-col gap-1 p-2">
         {menuItems.map((item, idx) => (
           <div key={idx} className="relative">
             <Link href={item.path ?? "#"} passHref>
               <button
                 type="button"
-                className="flex items-center justify-between w-full p-3 font-sans text-xl font-semibold text-left transition-colors border-b-0 select-none text-white hover:text-green-400"
+                className="flex w-full select-none items-center justify-between border-b-0 p-3 text-left font-sans text-xl font-semibold text-white transition-colors hover:text-purple-400"
                 onClick={() => {
                   handleSubMenuToggle(item.title);
                   handleMenuClick(item.title);
                 }}
               >
-                <div className="grid mr-4 place-items-center">{item.icon}</div>
-                <p className="block mr-auto font-sans text-base font-normal text-white">
+                <div className="mr-4 grid place-items-center">{item.icon}</div>
+                <p className="mr-auto block font-sans text-base font-normal text-white">
                   {item.title}
                 </p>
                 {item.submenu && (
@@ -188,7 +193,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onMenuSelect }) => {
                       strokeWidth="2.5"
                       stroke="currentColor"
                       aria-hidden="true"
-                      className={`w-4 h-4 transition-transform ${
+                      className={`h-4 w-4 transition-transform ${
                         openSubMenu === item.title ? "rotate-180" : ""
                       }`}
                     >
@@ -209,7 +214,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onMenuSelect }) => {
                     <Link
                       key={subIdx}
                       href={subItem.path}
-                      className="flex items-center w-full p-3 transition-all rounded-lg text-start hover:bg-green-700 hover:text-white"
+                      className="flex w-full items-center rounded-lg p-3 text-start transition-all hover:bg-color3 hover:text-white"
                       onClick={() => handleMenuClick(subItem.title)}
                     >
                       {subItem.title}
@@ -220,6 +225,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onMenuSelect }) => {
             )}
           </div>
         ))}
+        <button
+          onClick={() => signOut()}
+          className="flex items-center gap-4 p-3 hover:text-purple-400"
+        >
+          <div>
+            <MdLogout size={19} />
+          </div>
+          <div className="text-[15px]">Log Out</div>
+        </button>
       </nav>
     </div>
   );

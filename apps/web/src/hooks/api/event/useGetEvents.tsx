@@ -19,7 +19,6 @@ const useGetEvents = (queries: GetEventsQuery) => {
           params: queries,
         },
       );
-
       return data;
     },
   });

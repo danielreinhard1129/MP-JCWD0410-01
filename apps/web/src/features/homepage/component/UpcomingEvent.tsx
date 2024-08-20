@@ -1,12 +1,14 @@
 import EventCard from "@/components/EventCard";
+import EventCardSkeleton from "@/components/EventCardSkeleton";
 import useGetEvents from "@/hooks/api/event/useGetEvents";
 import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
 
 const UpcomingEvent = () => {
-  const { data } = useGetEvents({
+  const { data, isPending } = useGetEvents({
     take: 4,
   });
+
   return (
     <div className="bg-[#fbfbfb]">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-10 sm:gap-8">
@@ -25,7 +27,16 @@ const UpcomingEvent = () => {
             </div>
           </Link>
         </div>
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+          {isPending && (
+            <>
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+              <EventCardSkeleton />
+            </>
+          )}
           {data?.data.map((event, index: number) => {
             return (
               <Link href={`/events/${event.id}`} key={index}>
@@ -38,6 +49,7 @@ const UpcomingEvent = () => {
                   end_date={event.end_date}
                   price={event.price}
                   organizer={event.user.name}
+                  profilePic={event.user.profilePic}
                 />
               </Link>
             );

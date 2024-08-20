@@ -7,7 +7,7 @@ const Jumbotron = () => {
   return (
     <div className="relative h-96 overflow-hidden bg-black">
       <Image
-        src="/concert.avif"
+        src="/images/concert.avif"
         alt="concert"
         fill
         className="absolute inset-0 h-full w-full object-cover opacity-70"

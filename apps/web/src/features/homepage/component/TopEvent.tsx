@@ -1,3 +1,5 @@
+"use client";
+
 import EventCard from "@/components/EventCard";
 import useGetEvents from "@/hooks/api/event/useGetEvents";
 import Link from "next/link";
@@ -9,7 +11,10 @@ const TopEvent = () => {
     take: 5,
   });
   return (
-    <div className="bg-[url('/bg.png')] bg-cover py-10 text-white">
+    <div
+      className="bg-[url('/images/bg.png')] bg-cover py-10 text-white"
+      // style={{ background: "url: '/bg.png'" }}
+    >
       <div className="mx-auto grid max-w-7xl grid-flow-row items-center gap-8 px-4 text-center md:grid-flow-col">
         <div className="flex flex-col gap-4 text-left">
           <div className="text-xl font-bold sm:text-xl md:text-4xl">
@@ -40,8 +45,8 @@ const TopEvent = () => {
                   end_date={event.end_date}
                   price={event.price}
                   organizer={event.user.name}
-                  className="mr-4 text-left"
-                  width="w-72"
+                  profilePic={event.user.profilePic}
+                  className="mr-4 line-clamp-1 w-72 text-left"
                 />
               </Link>
             );

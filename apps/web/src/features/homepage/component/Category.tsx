@@ -6,25 +6,25 @@ const Category = () => {
     {
       name: "Concert",
       href: "/events?category=concert",
-      src: "/concert.png",
+      src: "/images/concert.png",
       alt: "concert",
     },
     {
       name: "Sport",
       href: "/events?category=sport",
-      src: "/sport.png",
+      src: "/images/sport.png",
       alt: "sport",
     },
     {
       name: "Festival",
       href: "/events?category=festival",
-      src: "/festival.png",
+      src: "/images/festival.png",
       alt: "festival",
     },
     {
       name: "Attraction",
       href: "/events?category=attraction",
-      src: "/attraction.png",
+      src: "/images/attraction.png",
       alt: "attraction",
     },
   ];
@@ -33,7 +33,7 @@ const Category = () => {
     <div className="bg-[#fbfbfb] pb-20 pt-10">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 rounded-md px-4 text-center">
         <div className="text-left text-lg font-semibold sm:text-xl md:text-2xl">
-          Event Category
+          Popular Category
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">

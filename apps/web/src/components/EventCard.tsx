@@ -13,6 +13,7 @@ interface EventCardProps {
   end_date: string;
   price: number;
   organizer: string;
+  profilePic?: string;
   className?: string;
   width?: string;
 }
@@ -25,18 +26,15 @@ const EventCard: FC<EventCardProps> = ({
   end_date,
   price,
   organizer,
+  profilePic,
   className,
-  width,
 }) => {
-  console.log(start_date);
-  console.log(end_date);
-
+  const formattedStartDate = format(new Date(start_date), "yyyy-MM-dd");
+  const formattedEndDate = format(new Date(end_date), "yyyy-MM-dd");
   return (
     <>
       <div className={`rounded-lg bg-white text-black shadow ${className}`}>
-        <div
-          className={`relative h-40 overflow-hidden rounded-t-lg md:h-36 ${width}`}
-        >
+        <div className={`relative h-40 overflow-hidden rounded-t-lg md:h-36`}>
           <Image
             src={thumbnail}
             alt="concert"
@@ -45,13 +43,15 @@ const EventCard: FC<EventCardProps> = ({
           />
         </div>
         <div className="space-y-2 p-5">
-          <div className="text-md font-semibold">{name}</div>
+          <div className="text-md line-clamp-1 font-semibold">{name}</div>
           <div className="flex items-center gap-2">
             <div className="rounded bg-neutral-100 p-2">
               <MdDateRange className="text-sm text-color2 text-opacity-60" />
             </div>
             <div className="text-sm text-neutral-500">
-              {`${format(new Date(start_date), "dd MMM yyyy")} - ${format(new Date(end_date), "dd MMM yyyy")}`}
+              {formattedStartDate === formattedEndDate
+                ? format(new Date(start_date), "dd MMM yyyy")
+                : `${format(new Date(start_date), "dd MMM yyyy")} - ${format(new Date(end_date), "dd MMM yyyy")}`}
             </div>
           </div>
           <div className="flex items-center gap-2 text-sm">
@@ -64,7 +64,7 @@ const EventCard: FC<EventCardProps> = ({
                 location.slice(1).toLowerCase()}
             </div>
           </div>
-          <div className="flex justify-end text-lg font-semibold text-color2">
+          <div className="flex justify-end text-lg font-semibold text-[#8753bd]">
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
@@ -74,14 +74,16 @@ const EventCard: FC<EventCardProps> = ({
           </div>
           <div className="flex items-center gap-2 border-t-[1px] border-dashed border-neutral-200 pt-3 text-sm">
             <div className="relative h-10 w-10 overflow-hidden rounded-full border-[1px] border-neutral-200">
-              <Image
-                src="/logoevent.png"
-                alt="concert"
-                fill
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+              {profilePic && (
+                <Image
+                  src={profilePic}
+                  alt="concert"
+                  fill
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              )}
             </div>
-            <div>{organizer}</div>
+            <div className="line-clamp-1">{organizer}</div>
           </div>
         </div>
       </div>

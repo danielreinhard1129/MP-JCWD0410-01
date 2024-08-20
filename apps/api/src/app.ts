@@ -12,6 +12,7 @@ import { PORT } from './config';
 import { SampleRouter } from './routers/sample.router';
 import { AuthRouter } from './routers/auth.router';
 import { EventRouter } from './routers/event.router';
+import { CategoryRouter } from './routers/category.router';
 import { VoucherRouter } from './routers/voucher.router';
 
 export default class App {
@@ -56,7 +57,8 @@ export default class App {
     const sampleRouter = new SampleRouter();
     const authRouter = new AuthRouter();
     const eventRouter = new EventRouter();
-    const voucherRouter = new VoucherRouter()
+    const categoryRouter = new CategoryRouter();
+    const voucherRouter = new VoucherRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student API!`);
@@ -65,7 +67,8 @@ export default class App {
     this.app.use('/api/samples', sampleRouter.getRouter());
     this.app.use('/api/auth', authRouter.getRouter());
     this.app.use('/api/events', eventRouter.getRouter());
-    this.app.use('/api/voucher',voucherRouter.getRouter())
+    this.app.use('/api/category', categoryRouter.getRouter());
+    this.app.use('/api/voucher', voucherRouter.getRouter());
   }
 
   public start(): void {

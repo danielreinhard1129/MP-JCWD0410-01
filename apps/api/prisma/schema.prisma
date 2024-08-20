@@ -141,14 +141,14 @@ model Event {
   categoryId  Int
   name        String
   thumbnail   String
-  description String
+  description String   @db.LongText()
   location    String
   start_date  DateTime
   end_date    DateTime
   price       Int
   discount    Int      @default(0)
   quota       Int
-  booked      Int
+  booked      Int      @default(0)
   userId      Int
   isDeleted   Boolean  @default(false)
   createdAt   DateTime @default(now())

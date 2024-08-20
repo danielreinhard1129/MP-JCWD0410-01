@@ -1,5 +1,7 @@
 "use client";
 
+import Markdown from "@/components/Markdown";
+import { Badge } from "@/components/ui/badge";
 import useGetEventDetail from "@/hooks/api/event/useGetEvent";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -46,8 +48,13 @@ const EventDetailPage = () => {
 
   return (
     <div className="bg-[#fbfbfb]">
-      <div className="mx-auto max-w-7xl px-4 py-10">
-        <div className="mb-4 text-2xl font-semibold">{data?.name}</div>
+      <div className="mx-auto max-w-7xl space-y-6 px-4 py-10">
+        <div className="space-y-2">
+          <Badge className="bg-purple-400 text-sm">
+            {data?.category.title}
+          </Badge>
+          <div className="text-2xl font-semibold">{data?.name}</div>
+        </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-10">
           <div className="relative col-span-1 h-52 overflow-hidden rounded-lg md:col-span-2 md:h-full">
             {data?.thumbnail && (
@@ -71,7 +78,10 @@ const EventDetailPage = () => {
                     <div className="text-sm opacity-50">Date</div>
                     {data?.start_date && data?.end_date && (
                       <div className="text-sm">
-                        {`${format(new Date(data.start_date), "dd MMM yyyy")} - ${format(new Date(data.end_date), "dd MMM yyyy")}`}
+                        {format(new Date(data.start_date), "yyyy-MM-dd") ===
+                        format(new Date(data.end_date), "yyyy-MM-dd")
+                          ? format(new Date(data.start_date), "dd MMM yyyy")
+                          : `${format(new Date(data.start_date), "dd MMM yyyy")} - ${format(new Date(data.end_date), "dd MMM yyyy")}`}
                       </div>
                     )}
                   </div>
@@ -104,12 +114,14 @@ const EventDetailPage = () => {
               <div className="flex items-center gap-2 border-t-[1px] border-dashed border-neutral-200 pt-3 text-sm">
                 <div className="flex items-center gap-2">
                   <div className="relative h-10 w-10 overflow-hidden rounded-full border-[1px] border-neutral-200">
-                    <Image
-                      src="/logoevent.png"
-                      alt="concert"
-                      fill
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
+                    {data?.user.profilePic && (
+                      <Image
+                        src={data.user.profilePic}
+                        alt="Profile picture"
+                        layout="fill"
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                    )}
                   </div>
                   <div className="flex flex-col">
                     <div className="text-sm opacity-50">Hosted by</div>
@@ -156,8 +168,8 @@ const EventDetailPage = () => {
               </button>
             </div>
 
-            {isOpenDescription && (
-              <div className="text-sm">{data?.description}</div>
+            {isOpenDescription && data?.description && (
+              <Markdown description={data.description} />
             )}
             {isOpenTicket && (
               <div className="space-y-4 rounded-md border-[1px] p-6 text-sm">
