@@ -34,7 +34,7 @@ model User {
   profilePic   String?
   address      String?
   phone_number String?
-  referral     String        @unique
+  referral     String?       @unique
   provider     Provider      @default(CREDENTIALS)
   createdAt    DateTime      @default(now())
   updateAt     DateTime      @updatedAt

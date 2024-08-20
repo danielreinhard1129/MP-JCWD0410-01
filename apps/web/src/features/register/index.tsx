@@ -17,7 +17,7 @@ const RegisterPage = () => {
       email: "",
       password: "",
       role: "CUSTOMER" as "ADMIN" | "CUSTOMER", // Default value for role
-      referralCode: "", // Add referral code to initial values
+      referral: "", // Ganti referralCode menjadi referral
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values) => {
@@ -29,9 +29,9 @@ const RegisterPage = () => {
   });
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="flex w-2/3 overflow-hidden rounded-lg bg-white shadow-lg">
-        <div className="relative w-1/2 overflow-hidden">
+    <main className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+      <div className="flex flex-col md:flex-row w-full md:w-2/3 overflow-hidden rounded-lg bg-white shadow-lg">
+        <div className="relative h-48 md:h-auto md:w-1/2 overflow-hidden">
           <Image
             src="/images/concert.avif"
             alt="Festival Picture"
@@ -39,7 +39,7 @@ const RegisterPage = () => {
             className="object-cover"
           />
         </div>
-        <div className="w-1/2 p-8">
+        <div className="w-full md:w-1/2 p-8">
           <CardHeader className="mb-6">
             <CardTitle className="text-2xl font-bold">Join Us Today</CardTitle>
             <p className="text-sm text-gray-600">
@@ -109,18 +109,18 @@ const RegisterPage = () => {
                   </select>
                 </div>
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="referralCode">Referral Code (Optional)</Label>
+                  <Label htmlFor="referral">Referral Code (Optional)</Label>
                   <Input
-                    name="referralCode"
+                    name="referral"
                     type="text"
                     placeholder="Referral code (if any)"
-                    value={formik.values.referralCode}
+                    value={formik.values.referral}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-                  {!!formik.touched.referralCode && !!formik.errors.referralCode ? (
+                  {!!formik.touched.referral && !!formik.errors.referral ? (
                     <p className="text-xs text-red-500">
-                      {formik.errors.referralCode}
+                      {formik.errors.referral}
                     </p>
                   ) : null}
                 </div>

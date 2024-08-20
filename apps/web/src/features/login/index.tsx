@@ -24,9 +24,9 @@ const LoginPage = () => {
   });
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="flex w-2/3 overflow-hidden rounded-lg bg-white shadow-lg">
-        <div className="relative w-1/2 overflow-hidden">
+    <main className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+      <div className="flex flex-col md:flex-row w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
+        <div className="relative w-full md:w-1/2 h-48 md:h-auto overflow-hidden">
           <Image
             src="/images/concert.avif"
             alt="Festival Picture"
@@ -34,7 +34,7 @@ const LoginPage = () => {
             className="object-cover"
           />
         </div>
-        <div className="w-1/2 p-8">
+        <div className="w-full md:w-1/2 p-8">
           <CardHeader className="mb-6">
             <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
             <p className="text-sm text-gray-600">
@@ -107,13 +107,13 @@ const LoginPage = () => {
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-between">
+              <div className="mt-4">
                 <Button className="w-full border border-gray-300 bg-white text-gray-600">
                   SIGN IN WITH GOOGLE
                 </Button>
               </div>
 
-              <div className="mt-4 flex items-center justify-between">
+              <div className="mt-4">
                 <Button className="w-full border border-gray-300 bg-white text-gray-600">
                   SIGN IN WITH TWITTER
                 </Button>
