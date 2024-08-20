@@ -8,7 +8,7 @@ interface RegisterArgs {
   email: string;
   password: string;
   role: "ADMIN" | "CUSTOMER";
-  referralCode?: string; // Add referralCode as an optional field
+  referral?: string; // Menggunakan referral sebagai nama properti
 }
 
 const useRegister = () => {
@@ -25,7 +25,7 @@ const useRegister = () => {
         email: payload.email,
         password: payload.password,
         role: payload.role,
-        referralCode: payload.referralCode || null, // Include referralCode if provided
+        referral: payload.referral 
       });
 
       alert("Register success");
