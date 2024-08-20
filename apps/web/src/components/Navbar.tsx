@@ -40,7 +40,10 @@ export const Navbar = () => {
 
   const pathname = usePathname();
 
-  const isPathname = pathname === "/login" || pathname === "/register";
+  const isPathname =
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname.includes("/dashboard");
 
   if (isPathname) {
     return null;
@@ -52,7 +55,7 @@ export const Navbar = () => {
         <Link href="/">
           <div className="relative h-10 w-28 overflow-hidden">
             <Image
-              src="/logo-purple.png"
+              src="/images/logo-purple.png"
               alt="concert"
               fill
               className="absolute inset-0 h-full w-full object-cover"

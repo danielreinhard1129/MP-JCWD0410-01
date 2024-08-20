@@ -36,7 +36,13 @@ const Autocomplete = () => {
     <AsyncSelect
       placeholder="Search event"
       loadOptions={loadOptions}
-      onChange={(event) => router.push(`/events/${event?.value}`)}
+      onChange={(event, actionMeta) => {
+        console.log(actionMeta);
+
+        if (actionMeta.action !== "clear") {
+          router.push(`/events/${event?.value}`);
+        }
+      }}
       isClearable={true}
     />
   );

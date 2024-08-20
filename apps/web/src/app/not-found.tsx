@@ -5,7 +5,12 @@ const NotFound = () => {
   return (
     <div className="flex h-[90vh] items-center justify-center">
       <div>
-        <Image src="/notfound.png" alt="Not Found" width={450} height={450} />
+        <Image
+          src="/images/notfound.png"
+          alt="Not Found"
+          width={450}
+          height={450}
+        />
       </div>
     </div>
   );

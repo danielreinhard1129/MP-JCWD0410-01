@@ -33,7 +33,7 @@ const RegisterPage = () => {
       <div className="flex w-2/3 overflow-hidden rounded-lg bg-white shadow-lg">
         <div className="relative w-1/2 overflow-hidden">
           <Image
-            src="/concert.avif"
+            src="/images/concert.avif"
             alt="Festival Picture"
             fill
             className="object-cover"

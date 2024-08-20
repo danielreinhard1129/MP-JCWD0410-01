@@ -13,7 +13,10 @@ import {
 const Footer = () => {
   const pathname = usePathname();
 
-  const isPathname = pathname === "/login" || pathname === "/register";
+  const isPathname =
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname.includes("/dashboard");
 
   if (isPathname) {
     return null;
@@ -26,7 +29,7 @@ const Footer = () => {
           <Link href="/" className="col-span-2 md:col-span-1">
             <div className="relative h-10 w-28 overflow-hidden">
               <Image
-                src="/logo-white.png"
+                src="/images/logo-white.png"
                 alt="concert"
                 fill
                 className="absolute inset-0 h-full w-full object-cover"

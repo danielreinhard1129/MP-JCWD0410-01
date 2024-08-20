@@ -11,9 +11,12 @@ export interface Event {
   quota: number;
   booked: number;
   userId: number;
-  category: number;
   isDeleted: boolean;
   user: {
     name: string;
+    profilePic: string;
+  };
+  category: {
+    title: string;
   };
 }
