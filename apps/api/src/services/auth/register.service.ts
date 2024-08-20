@@ -1,84 +1,98 @@
-import { hashPassword } from '@/lib/bcrypt';
-import prisma from '@/prisma';
 import { User } from '@prisma/client';
-import { v4 as uuidv4 } from 'uuid';
+import prisma from '../../prisma';
+import { hashPassword } from '@/lib/bcrypt';
+import { nanoid } from 'nanoid';
 
-export const registerService = async (body: Partial<User>) => {
+export const registerService = async (body: User) => {
   try {
     const { name, email, password, role, referral } = body;
 
-    // Pastikan semua properti yang dibutuhkan tidak undefined
-    if (!name || !email || !role) {
-      throw new Error('Name, email, and role are required');
-    }
+    console.log("Memulai proses pendaftaran...");
 
-    // Check if the user already exists
+    // Periksa apakah email sudah terdaftar
     const existingUser = await prisma.user.findFirst({
       where: { email },
     });
 
     if (existingUser) {
-      throw new Error('Email already exists');
+      console.error('Email sudah terdaftar');
+      throw new Error('Email sudah terdaftar');
     }
 
-    // Hash the user's password
+    // Hash password sebelum disimpan
     const hashedPassword = await hashPassword(password!);
 
-    // Generate a new referral code for the new user
-    const newReferralCode = uuidv4();
+    // Buat kode referral baru untuk pengguna baru
+    const newReferralCode = nanoid(5);
 
-    // Initialize user creation payload
-    const newUserPayload = {
-      email,
-      name,
-      password: hashedPassword,
-      referral: newReferralCode, // Assign a new referral code
-      role,
-    };
+    console.log("Membuat pengguna baru dengan referral code:", newReferralCode);
 
-    // Create the new user in the database
+    // Buat pengguna baru
     const newUser = await prisma.user.create({
-      data: newUserPayload,
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role,
+        referral: newReferralCode,
+      },
     });
 
-    // If a referral code is provided, process the referral
+    console.log("Pengguna baru dibuat:", newUser.id);
+
+    // Periksa apakah kode referral diberikan
     if (referral) {
-      // Find the referrer based on the referral code
+      console.log("Kode referral digunakan:", referral);
+
+      // Temukan pengguna dengan kode referral yang diberikan
       const referrer = await prisma.user.findFirst({
         where: { referral },
       });
 
       if (!referrer) {
-        throw new Error('Invalid referral code');
+        console.error('Kode referral tidak valid');
+        throw new Error('Kode referral tidak valid');
       }
 
-      // Increment points for the referrer
-      const pointsExpirationDate = new Date();
-      pointsExpirationDate.setMonth(pointsExpirationDate.getMonth() + 3); // Points valid for 3 months
+      console.log("Referrer ditemukan:", referrer.id);
 
-      await prisma.userPoint.create({
-        data: {
-          userId: referrer.id,
-          points: 10000, // Increment referrer's points by 10,000
-          exp_date: pointsExpirationDate,
-        },
+      // Temukan atau buat UserPoint untuk pengguna yang memberikan referral
+      const userPoint = await prisma.userPoint.findFirst({
+        where: { userId: referrer.id },
       });
 
-      // Give the new user a reward
-      const rewardExpirationDate = new Date();
-      rewardExpirationDate.setMonth(rewardExpirationDate.getMonth() + 3); // Reward valid for 3 months
+      if (userPoint) {
+        // Jika UserPoint sudah ada, lakukan update poinnya
+        await prisma.userPoint.update({
+          where: { id: userPoint.id },
+          data: { points: { increment: 10000 } }, // Tambahkan 10000 poin
+        });
+        console.log("Poin ditambahkan untuk referrer:", referrer.id);
+      } else {
+        // Jika UserPoint belum ada, buat yang baru
+        await prisma.userPoint.create({
+          data: {
+            userId: referrer.id,
+            points: 10000,
+            exp_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // Set tanggal kedaluwarsa poin
+          },
+        });
+        console.log("Poin baru dibuat untuk referrer:", referrer.id);
+      }
 
-      const reward = await prisma.reward.create({
-        data: {
-          name: 'Referral Reward',
-          code: uuidv4(),
-          quota: 1,
-          nominal: 5000, // This is just an example, adjust based on your needs
-          exp_date: rewardExpirationDate,
-        },
+      // Pastikan reward default ada
+      const reward = await prisma.reward.findFirst({
+        where: { id: 1 }, // Asumsikan rewardId 1 adalah reward default untuk pengguna baru
       });
 
-      // Assign the reward to the new user
+      if (!reward) {
+        console.error('Reward default tidak ditemukan');
+        throw new Error('Reward default tidak ditemukan');
+      }
+
+      console.log("Reward default ditemukan:", reward.id);
+
+      // Berikan reward kepada pengguna baru
       await prisma.userReward.create({
         data: {
           userId: newUser.id,
@@ -86,32 +100,35 @@ export const registerService = async (body: Partial<User>) => {
         },
       });
 
-      // Create a voucher reward for the new user
-      const voucherExpirationDate = new Date();
-      voucherExpirationDate.setMonth(voucherExpirationDate.getMonth() + 3); // Voucher valid for 3 months
+      // Tambahkan jumlah klaim pada reward
+      await prisma.reward.update({
+        where: { id: reward.id },
+        data: { claimed: { increment: 1 } },
+      });
 
-      const voucher = await prisma.voucher.create({
+      console.log("Reward diberikan kepada pengguna baru:", newUser.id);
+
+      // Jika kode referral digunakan, berikan reward kepada pemberi referral
+      await prisma.userReward.create({
         data: {
-          name: 'Welcome Discount Voucher',
-          code: uuidv4(),
-          quota: 1,
-          nominal: 5000, // This is just an example, adjust based on your needs
-          exp_date: voucherExpirationDate,
+          userId: referrer.id,
+          rewardId: reward.id,
         },
       });
 
-      // Assign the voucher to the new user
-      await prisma.userVoucher.create({
-        data: {
-          userId: newUser.id,
-          voucherId: voucher.id,
-        },
+      // Tambahkan jumlah klaim pada reward untuk pemberi referral
+      await prisma.reward.update({
+        where: { id: reward.id },
+        data: { claimed: { increment: 1 } },
       });
+
+      console.log("Reward diberikan kepada referrer:", referrer.id);
+    } else {
+      console.log("Tidak ada kode referral yang digunakan.");
     }
 
-    // Return the newly created user
-    return newUser;
+    return newUser; // Kembalikan data pengguna baru
   } catch (error) {
-    throw error;
+    throw error; // Lempar error jika terjadi masalah
   }
 };
