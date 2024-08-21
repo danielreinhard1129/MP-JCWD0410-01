@@ -37,8 +37,6 @@ const Autocomplete = () => {
       placeholder="Search event"
       loadOptions={loadOptions}
       onChange={(event, actionMeta) => {
-        console.log(actionMeta);
-
         if (actionMeta.action !== "clear") {
           router.push(`/events/${event?.value}`);
         }

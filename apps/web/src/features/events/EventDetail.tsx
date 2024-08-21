@@ -17,7 +17,7 @@ const EventDetailPage = () => {
 
   const [isOpenDescription, setIsOpenDescription] = useState(true);
   const [isOpenTicket, setIsOpenTicket] = useState(false);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
 
   const handleIncrement = () => {
     setQuantity((prev) => prev + 1);
@@ -92,7 +92,14 @@ const EventDetailPage = () => {
                   </div>
                   <div className="flex flex-col text-sm">
                     <div className="opacity-50">Time</div>
-                    <div>10:00 - 22:00</div>
+                    {data?.start_date && data?.end_date && (
+                      <div className="text-sm">
+                        {format(new Date(data.start_date), "HH:mm") ===
+                        format(new Date(data.end_date), "HH:mm")
+                          ? format(new Date(data.start_date), "HH:mm")
+                          : `${format(new Date(data.start_date), "HH:mm")} - ${format(new Date(data.end_date), "HH:mm")}`}
+                      </div>
+                    )}
                   </div>
                 </div>{" "}
                 <div className="flex items-center gap-2 pb-3">
@@ -176,7 +183,7 @@ const EventDetailPage = () => {
                 <div className="flex items-center justify-between">
                   <div className="font-semibold">PRESALE DAY 1</div>
                   <div className="rounded-md bg-purple-200 px-2 py-1 text-color1">
-                    On Sale
+                    {data?.quota === 0 ? "Unavailable" : "Available"}
                   </div>
                 </div>
                 <hr className="border-[1px] border-dashed" />
@@ -195,27 +202,26 @@ const EventDetailPage = () => {
                     )}
                   </div>
                   <div className="flex flex-col gap-4">
-                    <div className="flex">
+                    <div className="flex justify-between">
                       <button
                         onClick={handleDecrement}
                         disabled={quantity <= 1}
-                        className="h-8 w-8 rounded-md bg-neutral-200 hover:bg-color2 hover:text-white"
+                        className="h-8 w-8 rounded-md bg-neutral-200"
                         type="button"
                       >
                         -
                       </button>
-
                       <input
                         type="number"
                         value={quantity}
                         onChange={handleInputChange}
                         className="h-8 w-8 text-center"
                       />
-
                       <button
                         onClick={handleIncrement}
-                        className="h-8 w-8 rounded-md bg-neutral-200 hover:bg-color2 hover:text-white"
+                        className="h-8 w-8 rounded-md bg-neutral-200"
                         type="button"
+                        disabled={!!data?.quota && data.quota <= quantity}
                       >
                         +
                       </button>
@@ -224,9 +230,14 @@ const EventDetailPage = () => {
                       type="button"
                       className="rounded-md bg-color2 px-6 py-2 text-white hover:bg-color3"
                     >
-                      Buy
+                      Buy Ticket
                     </button>
                   </div>
+                </div>
+                <div className="text-red-500">
+                  {data?.quota && data.quota <= quantity
+                    ? `Only ${data.quota} tickets are available. Please adjust your selection and try again.`
+                    : null}
                 </div>
               </div>
             )}
