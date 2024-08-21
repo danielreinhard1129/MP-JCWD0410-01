@@ -5,12 +5,11 @@ interface CreateEventBody {
   name: string;
   description: string;
   location: string;
-  start_date: Date;
-  end_date: Date;
+  startDate: Date;
+  endDate: Date;
   price: number;
   discount: number;
   quota: number;
-  booked: number;
   categoryId: number;
 }
 
@@ -24,8 +23,8 @@ export const createEventService = async (
       name,
       description,
       location,
-      start_date,
-      end_date,
+      startDate,
+      endDate,
       price,
       discount,
       quota,
@@ -42,18 +41,18 @@ export const createEventService = async (
 
     const { secure_url } = await cloudinaryUpload(file);
 
-    return prisma.event.create({
+    return await prisma.event.create({
       data: {
         name,
         description,
         location,
-        start_date: new Date(start_date),
-        end_date: new Date(end_date),
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
         price: Number(price),
         discount: Number(discount),
         quota: Number(quota),
         userId: Number(userId),
-        categoryId: 1,
+        categoryId: Number(categoryId),
         thumbnail: secure_url,
       },
     });
