@@ -3,7 +3,8 @@
 import { axiosInstance } from "@/lib/axios";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const useResetPassword = () => {
@@ -14,7 +15,7 @@ const useResetPassword = () => {
     setIsLoading(true);
     try {
       await axiosInstance.patch(
-        "/auth/reset-password",
+        "/api/auth/reset-password",
         { password },
         {
           headers: {
@@ -22,7 +23,6 @@ const useResetPassword = () => {
           },
         },
       );
-
       toast.success("Reset password success");
       router.replace("/login");
     } catch (error) {
@@ -33,7 +33,6 @@ const useResetPassword = () => {
       setIsLoading(false);
     }
   };
-
   return { resetPassword, isLoading };
 };
 

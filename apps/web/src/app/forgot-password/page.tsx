@@ -1,4 +1,4 @@
-import ForgotPasswordPage from "@/features/forgot-password/schemas";
+import ForgotPasswordPage from "@/features/forgot-password";
 
 
 const ForgotPassword = () => {

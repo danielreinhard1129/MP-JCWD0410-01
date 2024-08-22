@@ -1,6 +1,4 @@
-import { AuthController } from '@/controllers/auth.controller';
 import { VoucherController } from '@/controllers/voucher.controller';
-import { verifyToken } from '@/lib/verifyToken';
 import { Router } from 'express';
 
 export class VoucherRouter {
@@ -14,8 +12,8 @@ export class VoucherRouter {
   }
 
   private initializeRoutes(): void {
-
-    this.router.post('/createvoucher', this.voucherController.createVoucher);
+    this.router.get('/', this.voucherController.getVouchers);
+    this.router.post('/', this.voucherController.createVoucher);
   }
 
   getRouter(): Router {

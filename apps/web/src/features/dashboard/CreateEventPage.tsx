@@ -36,8 +36,8 @@ const CreateEventPage = () => {
       name: "",
       description: "",
       location: "",
-      start_date: undefined,
-      end_date: undefined,
+      startDate: undefined,
+      endDate: undefined,
       discount: 0,
       price: 0,
       quota: 0,
@@ -118,18 +118,18 @@ const CreateEventPage = () => {
           </Select>
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
-              <Label htmlFor="start_date">Start Date</Label>
+              <Label htmlFor="startDate">Start Date</Label>
               <DateTimePicker
                 onDateTimeChange={(date) =>
-                  formik.setFieldValue("start_date", date)
+                  formik.setFieldValue("startDate", date)
                 }
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Label htmlFor="start_date">End Date</Label>
+              <Label htmlFor="startDate">End Date</Label>
               <DateTimePicker
                 onDateTimeChange={(date) =>
-                  formik.setFieldValue("end_date", date)
+                  formik.setFieldValue("endDate", date)
                 }
               />
             </div>

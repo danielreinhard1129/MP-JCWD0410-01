@@ -4,12 +4,12 @@ YupPassword(Yup);
 
 export const ResetPasswordSchema = Yup.object().shape({
   password: Yup.string()
-    .required("Password is required")
+    .required("password is required")
     .minLowercase(1)
     .minNumbers(1)
     .minUppercase(1)
     .min(6),
-  confirmPassword: Yup.string()
+    confirmPassword: Yup.string()
     .required("Confirm Password is Required")
-    .oneOf([Yup.ref("password")], "Your password do not match"),
+    .oneOf([Yup.ref("password")],"Your password do not match")
 });

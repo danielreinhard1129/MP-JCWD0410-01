@@ -45,6 +45,8 @@ export default class App {
     this.app.use(
       (err: Error, req: Request, res: Response, next: NextFunction) => {
         if (req.path.includes('/api/')) {
+          console.log(err);
+          
           res.status(500).send(err.message);
         } else {
           next();

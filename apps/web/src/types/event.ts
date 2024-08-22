@@ -4,8 +4,8 @@ export interface Event {
   thumbnail: string;
   description: string;
   location: string;
-  start_date: string;
-  end_date: string;
+  startDate: string;
+  endDate: string;
   price: number;
   discount: number;
   quota: number;

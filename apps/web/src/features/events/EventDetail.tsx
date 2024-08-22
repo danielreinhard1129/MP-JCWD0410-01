@@ -76,12 +76,12 @@ const EventDetailPage = () => {
                   </div>
                   <div className="flex flex-col">
                     <div className="text-sm opacity-50">Date</div>
-                    {data?.start_date && data?.end_date && (
+                    {data?.startDate && data?.endDate && (
                       <div className="text-sm">
-                        {format(new Date(data.start_date), "yyyy-MM-dd") ===
-                        format(new Date(data.end_date), "yyyy-MM-dd")
-                          ? format(new Date(data.start_date), "dd MMM yyyy")
-                          : `${format(new Date(data.start_date), "dd MMM yyyy")} - ${format(new Date(data.end_date), "dd MMM yyyy")}`}
+                        {format(new Date(data.startDate), "yyyy-MM-dd") ===
+                        format(new Date(data.endDate), "yyyy-MM-dd")
+                          ? format(new Date(data.startDate), "dd MMM yyyy")
+                          : `${format(new Date(data.startDate), "dd MMM yyyy")} - ${format(new Date(data.endDate), "dd MMM yyyy")}`}
                       </div>
                     )}
                   </div>
