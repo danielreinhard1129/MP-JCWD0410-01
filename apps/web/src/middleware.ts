@@ -15,35 +15,41 @@ const loggedOutRoutes = [
 ];
 
 export default auth((req) => {
-  const { pathname } = req.nextUrl;
-  const user = req.auth?.user as User | undefined; // Casting ke tipe User
+  // const { pathname } = req.nextUrl;
+  // const user = req.auth?.user as User | undefined; // Casting ke tipe User
 
-  const isLoggedOutRoute = loggedOutRoutes.some((route) =>
-    pathname.startsWith(route),
-  );
+  // const isLoggedOutRoute = loggedOutRoutes.some((route) =>
+  //   pathname.startsWith(route)
+  // );
 
-  // Redirect unauthenticated users to login if they are accessing private routes
-  if (!user && !isLoggedOutRoute && pathname !== "/") {
-    const newUrl = new URL("/", req.nextUrl.origin);
-    return NextResponse.redirect(newUrl);
-  }
+  // // Redirect unauthenticated users to login if they are accessing private routes
+  // if (!user && !isLoggedOutRoute && pathname !== "/") {
+  //   const newUrl = new URL("/", req.nextUrl.origin);
+  //   return NextResponse.redirect(newUrl);
+  // }
 
-  // Redirect authenticated users away from loggedOutRoutes
-  if (user && isLoggedOutRoute) {
-    const newUrl = new URL("/", req.nextUrl.origin);
-    return NextResponse.redirect(newUrl);
-  }
+  // // Redirect authenticated users away from loggedOutRoutes
+  // if (user && isLoggedOutRoute) {
+  //   const newUrl = new URL("/", req.nextUrl.origin);
+  //   return NextResponse.redirect(newUrl);
+  // }
 
-  // Izinkan admin mengakses dashboard
-  if (user?.role === "ADMIN" && pathname === "/dashboard") {
-    return NextResponse.next();
-  }
+  // // Redirect admin away from "/"
+  // if (user?.role === "ADMIN" && pathname === "/") {
+  //   const newUrl = new URL("/dashboard", req.nextUrl.origin);
+  //   return NextResponse.redirect(newUrl);
+  // }
 
-  // Prevent customers from accessing dashboard
-  if (user?.role === "CUSTOMER" && pathname === "/dashboard") {
-    const newUrl = new URL("/", req.nextUrl.origin);
-    return NextResponse.redirect(newUrl);
-  }
+  // // Prevent customers from accessing "/dashboard"
+  // if (user?.role === "CUSTOMER" && pathname === "/dashboard") {
+  //   const newUrl = new URL("/", req.nextUrl.origin);
+  //   return NextResponse.redirect(newUrl);
+  // }
+
+  // // Allow admins to access the dashboard
+  // if (user?.role === "ADMIN" && pathname === "/dashboard") {
+  //   return NextResponse.next();
+  // }
 
   // For other routes, allow access
   return NextResponse.next();
