@@ -8,6 +8,7 @@ import { LoginSchema } from "./schemas/LoginSchema";
 import useLogin from "@/hooks/api/auth/useLogin";
 import Link from "next/link";
 import Image from "next/image";
+import { signIn } from "next-auth/react"; // Import signIn from next-auth/react
 
 const LoginPage = () => {
   const { mutateAsync: login, isPending } = useLogin();
@@ -28,15 +29,15 @@ const LoginPage = () => {
       <div className="flex flex-col md:flex-row w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
         <div className="relative w-full md:w-1/2 h-48 md:h-auto overflow-hidden">
           <Image
-            src="/images/concert.avif"
+            src="/concert.avif"
             alt="Festival Picture"
-            fill
+            layout="fill"
             className="object-cover"
           />
         </div>
         <div className="w-full md:w-1/2 p-8">
           <CardHeader className="mb-6">
-            <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+            <CardTitle className="text-xl md:text-2xl font-bold">Sign In</CardTitle>
             <p className="text-sm text-gray-600">
               Enter your email and password to Sign In.
             </p>
@@ -76,18 +77,20 @@ const LoginPage = () => {
                     </p>
                   ) : null}
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col md:flex-row items-center justify-between">
                   <div className="flex items-center">
                     <input type="checkbox" id="terms" className="mr-2" />
                     <label htmlFor="terms" className="text-sm text-gray-600">
-                      I agree the{" "}
+                      I agree to the{" "}
                       <a href="#" className="text-blue-500">
                         Terms and Conditions
                       </a>
                     </label>
                   </div>
                   <Link href="/forgot-password">
-                    <p className="text-sm text-blue-500">Forgot Password?</p>
+                    <p className="text-sm text-blue-500 mt-2 md:mt-0">
+                      Forgot Password?
+                    </p>
                   </Link>
                 </div>
               </div>
@@ -98,23 +101,29 @@ const LoginPage = () => {
                 {isPending ? "Loading..." : "SIGN IN"}
               </Button>
 
-              <div className="mt-4 flex items-center justify-between">
-                <div className="flex items-center">
+              <div className="mt-4 flex flex-col md:flex-row items-center justify-between">
+                <div className="flex items-center mb-2 md:mb-0">
                   <input type="checkbox" id="newsletter" className="mr-2" />
                   <label htmlFor="newsletter" className="text-sm text-gray-600">
-                    Subscribe me to newsletter
+                    Subscribe me to the newsletter
                   </label>
                 </div>
               </div>
 
               <div className="mt-4">
-                <Button className="w-full border border-gray-300 bg-white text-gray-600">
+                <Button
+                  className="w-full border border-gray-300 bg-white text-gray-600"
+                  onClick={() => signIn('google')} // Trigger Google Sign-In
+                >
                   SIGN IN WITH GOOGLE
                 </Button>
               </div>
 
               <div className="mt-4">
-                <Button className="w-full border border-gray-300 bg-white text-gray-600">
+                <Button
+                  className="w-full border border-gray-300 bg-white text-gray-600"
+                  onClick={() => signIn('twitter')} // Trigger Twitter Sign-In
+                >
                   SIGN IN WITH TWITTER
                 </Button>
               </div>
@@ -123,7 +132,7 @@ const LoginPage = () => {
                 <p>
                   Not registered?{" "}
                   <Link href="/register" className="text-blue-500">
-                    Create account
+                    Create an account
                   </Link>
                 </p>
               </div>

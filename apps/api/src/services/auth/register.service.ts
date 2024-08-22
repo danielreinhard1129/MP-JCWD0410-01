@@ -1,7 +1,7 @@
 import { hashPassword } from '@/lib/bcrypt';
 import prisma from '@/prisma';
 import { User } from '@prisma/client';
-import { nanoid } from 'nanoid'; // Menggunakan nanoid@3
+import { nanoid } from 'nanoid'; 
 
 export const registerService = async (body: Partial<User>) => {
   try {
@@ -83,7 +83,7 @@ export const registerService = async (body: Partial<User>) => {
             where: { userId: referrer.id },
             data: {
               points: existingUserPoint.points + 10000, // Tambah poin referrer sebanyak 10.000
-              exp_date: pointsExpirationDate > existingUserPoint.exp_date ? pointsExpirationDate : existingUserPoint.exp_date,
+              expDate: pointsExpirationDate > existingUserPoint.expDate ? pointsExpirationDate : existingUserPoint.expDate,
             },
           });
         } else {
@@ -92,7 +92,7 @@ export const registerService = async (body: Partial<User>) => {
             data: {
               userId: referrer.id,
               points: 10000, // Tambah poin referrer sebanyak 10.000
-              exp_date: pointsExpirationDate,
+              expDate: pointsExpirationDate,
             },
           });
         }
@@ -103,11 +103,12 @@ export const registerService = async (body: Partial<User>) => {
 
         const reward = await prisma.reward.create({
           data: {
-            name: 'Referral Reward',
+            name: 'Voucher Diskon',
             code: nanoid(), // Menggunakan nanoid untuk generate reward code
             quota: 1,
-            nominal: 5000, // Nominal reward
-            exp_date: rewardExpirationDate,
+            nominal: 500, // Nominal reward
+            claimed:1,
+            expDate: rewardExpirationDate,
           },
         });
 
