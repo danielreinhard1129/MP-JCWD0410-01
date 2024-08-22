@@ -84,7 +84,7 @@ model Reward {
   quota       Int
   nominal     Int
   claimed     Int          @default(0)
-  expDate    DateTime
+  expDate     DateTime
   createdAt   DateTime     @default(now())
   updateAt    DateTime     @updatedAt
   userRewards UserReward[]
@@ -106,17 +106,17 @@ model UserVoucher {
 
 model Voucher {
   id           Int           @id @default(autoincrement())
-  eventId      Int?
+  eventId      Int
   name         String
   code         String        @unique
   quota        Int
   nominal      Int
   claimed      Int           @default(0)
-  expDate     DateTime
+  expDate      DateTime
   createdAt    DateTime      @default(now())
   updateAt     DateTime      @updatedAt
   userVouchers UserVoucher[]
-  event        Event?        @relation(fields: [eventId], references: [id])
+  event        Event         @relation(fields: [eventId], references: [id])
 
   @@map("vouchers")
 }
@@ -143,8 +143,8 @@ model Event {
   thumbnail   String
   description String   @db.LongText()
   location    String
-  startDate  DateTime
-  endDate    DateTime
+  startDate   DateTime
+  endDate     DateTime
   price       Int
   discount    Int      @default(0)
   quota       Int
@@ -174,21 +174,21 @@ model Category {
 }
 
 model Transaction {
-  id             Int           @id @default(autoincrement())
-  userId         Int
-  eventId        Int
-  qty            Int
-  total          Int
-  status         Status
+  id            Int           @id @default(autoincrement())
+  userId        Int
+  eventId       Int
+  qty           Int
+  total         Int
+  status        Status
   paymentProof  String?
   paymentMethod PaymentMethod
   pointUsed     Int           @default(0)
   voucherUsed   Int           @default(0)
   rewardUsed    Int           @default(0)
-  createdAt      DateTime      @default(now())
-  updateAt       DateTime      @updatedAt
-  user           User          @relation(fields: [userId], references: [id])
-  event          Event         @relation(fields: [eventId], references: [id])
+  createdAt     DateTime      @default(now())
+  updateAt      DateTime      @updatedAt
+  user          User          @relation(fields: [userId], references: [id])
+  event         Event         @relation(fields: [eventId], references: [id])
 
   @@map("transactions")
 }

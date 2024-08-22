@@ -6,7 +6,7 @@ interface GetEventsService {
   take: number;
   sortBy: string;
   sortOrder: string;
-  search: string;
+  search?: string;
   location?: string;
   category?: string;
 }
@@ -20,15 +20,17 @@ export const getEventsService = async (query: GetEventsService) => {
     };
 
     if (location) {
-      whereClause.location = location;
+      whereClause.location = { contains: location };  // Tanpa 'mode'
     }
 
     if (category) {
-      whereClause.category = { title: category };
+      whereClause.category = {
+        title: { contains: category }  // Tanpa 'mode'
+      };
     }
 
     if (search) {
-      whereClause.name = { contains: search };
+      whereClause.name = { contains: search };  // Tanpa 'mode'
     }
 
     const events = await prisma.event.findMany({
@@ -38,18 +40,20 @@ export const getEventsService = async (query: GetEventsService) => {
       orderBy: {
         [sortBy]: sortOrder,
       },
-
       include: {
         user: {
-          // join dengan user
           select: {
             name: true,
             profilePic: true,
           },
         },
+        category: {
+          select: {
+            title: true,
+          },
+        },
       },
     });
-    2;
 
     const total = await prisma.event.count({
       where: whereClause,

@@ -45,8 +45,8 @@ const UpcomingEvent = () => {
                   name={event.name}
                   thumbnail={event.thumbnail}
                   location={event.location}
-                  start_date={event.start_date}
-                  end_date={event.end_date}
+                  startDate={event.startDate}
+                  endDate={event.endDate}
                   price={event.price}
                   organizer={event.user.name}
                   profilePic={event.user.profilePic}

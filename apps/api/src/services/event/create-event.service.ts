@@ -31,6 +31,9 @@ export const createEventService = async (
       categoryId,
     } = body;
 
+    console.log(body);
+    
+
     const event = await prisma.event.findFirst({
       where: { name },
     });

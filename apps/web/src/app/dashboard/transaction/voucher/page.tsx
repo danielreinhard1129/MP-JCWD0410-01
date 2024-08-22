@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import Sidebar from '@/components/DashboardAdmin/sidebar';
 import NavbarDashboard from '@/components/DashboardAdmin/NavbarDashboard';
-import EventTable from '@/components/DashboardAdmin/EventTable';
-import VoucherTable from '@/components/DashboardAdmin/vouchertable';
+import VoucherTable from '@/features/dashboard/VoucherTablePage';
+
+
 
 const voucher = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

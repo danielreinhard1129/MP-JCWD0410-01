@@ -10,8 +10,8 @@ interface CreateEventPayload {
   name: string;
   description: string;
   location: string;
-  start_date: Date | undefined;
-  end_date: Date | undefined;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
   price: number;
   discount: number;
   quota: number;
@@ -32,8 +32,8 @@ const useCreateEvent = () => {
       createEventForm.append("name", payload.name);
       createEventForm.append("description", payload.description);
       createEventForm.append("location", payload.location);
-      createEventForm.append("start_date", payload.start_date!.toString());
-      createEventForm.append("end_date", payload.end_date!.toString());
+      createEventForm.append("startDate", payload.startDate!.toString());
+      createEventForm.append("endDate", payload.endDate!.toString());
       createEventForm.append("price", payload.price.toString());
       createEventForm.append("discount", payload.discount.toString());
       createEventForm.append("quota", payload.quota.toString());
