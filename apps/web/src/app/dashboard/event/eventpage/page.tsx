@@ -1,13 +1,12 @@
-// src/app/dashboard/transaction/event/page.tsx
-"use client"
-import React, { useState } from 'react';
-import Sidebar from '@/components/DashboardAdmin/sidebar';
-import NavbarDashboard from '@/components/DashboardAdmin/NavbarDashboard';
-import EventTable from '@/components/DashboardAdmin/EventTable';
+"use client";
+import React, { useState } from "react";
+import Sidebar from "@/components/DashboardAdmin/sidebar";
+import NavbarDashboard from "@/components/DashboardAdmin/NavbarDashboard";
+import EventTable from "@/features/dashboard/EventTablePage";
 
-const eventPage = () => {
+const EventPage = () => { // Make sure the component name is PascalCase
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState('Event');
+  const [selectedMenu, setSelectedMenu] = useState("Event");
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -33,11 +32,11 @@ const eventPage = () => {
 
         {/* Page Content */}
         <div className="p-6 flex-1 overflow-y-auto">
-          <EventTable />
+          <EventTable /> {/* Include the EventTable component */}
         </div>
       </div>
     </div>
   );
 };
 
-export default eventPage;
+export default EventPage;

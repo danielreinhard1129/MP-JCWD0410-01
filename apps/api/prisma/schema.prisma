@@ -106,7 +106,7 @@ model UserVoucher {
 
 model Voucher {
   id           Int           @id @default(autoincrement())
-  eventId      Int?
+  eventId      Int
   name         String
   code         String        @unique
   quota        Int
@@ -116,7 +116,7 @@ model Voucher {
   createdAt    DateTime      @default(now())
   updateAt     DateTime      @updatedAt
   userVouchers UserVoucher[]
-  event        Event?        @relation(fields: [eventId], references: [id])
+  event        Event         @relation(fields: [eventId], references: [id])
 
   @@map("vouchers")
 }

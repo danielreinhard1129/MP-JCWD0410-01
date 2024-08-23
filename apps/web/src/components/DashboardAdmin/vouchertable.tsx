@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/navigation"; // Import useRouter dari next/navigation
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
 interface Voucher {
@@ -33,10 +34,11 @@ const vouchers: Voucher[] = [
     claimed: 120,
     expDate: "2024-10-10",
   },
-  // Add more vouchers as needed
+  // Tambahkan lebih banyak voucher jika diperlukan
 ];
 
 const VoucherTable: React.FC = () => {
+  const router = useRouter(); // Gunakan useRouter untuk navigasi
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"view" | "create">("view");
   const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
@@ -54,10 +56,8 @@ const VoucherTable: React.FC = () => {
   };
 
   const handleCreateVoucher = () => {
-    setSelectedVoucher(null);
-    setModalType("create");
-    setModalOpen(true);
-    setDropdownOpen(null); // Close dropdown after selecting an option
+    // Navigasi ke halaman "/create-voucher" alih-alih membuka modal
+    router.push("/dashboard/transaction/create-voucher");
   };
 
   const closeModal = () => {

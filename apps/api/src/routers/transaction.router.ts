@@ -1,14 +1,15 @@
+import { TransactionUserController } from '@/controllers/transaction-user.controller';
 import { TransactionController } from '@/controllers/transaction.controller';
 import { uploader } from '@/lib/multer';
 import { verifyToken } from '@/lib/verifyToken';
 import { Router } from 'express';
 
-export class TransactionRouter {
+export class TransactionUserRouter {
   private router: Router;
-  private transactionController: TransactionController;
+  private transactionUserController: TransactionUserController;
 
   constructor() {
-    this.transactionController = new TransactionController();
+    this.transactionUserController = new TransactionUserController();
     this.router = Router();
     this.initializeRoutes();
   }
@@ -17,19 +18,19 @@ export class TransactionRouter {
     this.router.get(
       '/',
       verifyToken,
-      this.transactionController.getTransactions,
+      this.transactionUserController.getTransactions,
     );
-    this.router.get('/:id', this.transactionController.getTransaction);
+    this.router.get('/:id', this.transactionUserController.getTransaction);
     this.router.post(
       '/',
       verifyToken,
-      this.transactionController.createTransaction,
+      this.transactionUserController.createTransaction,
     );
     this.router.patch(
       '/:id',
       verifyToken,
       uploader().single('paymentProof'),
-      this.transactionController.updateTransaction,
+      this.transactionUserController.updateTransaction,
     );
   }
 

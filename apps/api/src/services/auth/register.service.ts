@@ -30,22 +30,6 @@ export const registerService = async (body: Partial<User>) => {
       throw new Error('Invalid referral code');
     }
 
-    // Hitung jumlah penggunaan referral code sebelum melanjutkan
-    if (referrer) {
-      const referralUsageCount = await prisma.user.count({
-        where: {
-          referral: referrer.referral,
-        },
-      });
-
-      // Batasi penggunaan referral code hingga maksimal 3 kali
-      if (referralUsageCount >= 3) {
-        throw new Error(
-          'Referral code has reached its maximum usage limit of 3.',
-        );
-      }
-    }
-
     // Bungkus seluruh proses dalam transaksi dengan menggunakan $transaction
     return await prisma.$transaction(async (prisma) => {
       // Hash password user
@@ -85,10 +69,7 @@ export const registerService = async (body: Partial<User>) => {
             where: { userId: referrer.id },
             data: {
               points: existingUserPoint.points + 10000, // Tambah poin referrer sebanyak 10.000
-              expDate:
-                pointsExpirationDate > existingUserPoint.expDate
-                  ? pointsExpirationDate
-                  : existingUserPoint.expDate,
+              expDate: pointsExpirationDate,
             },
           });
         } else {
