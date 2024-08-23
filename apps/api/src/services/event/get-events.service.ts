@@ -20,17 +20,17 @@ export const getEventsService = async (query: GetEventsService) => {
     };
 
     if (location) {
-      whereClause.location = { contains: location };  // Tanpa 'mode'
+      whereClause.location = { contains: location };  
     }
 
     if (category) {
       whereClause.category = {
-        title: { contains: category }  // Tanpa 'mode'
+        title: { contains: category }  
       };
     }
 
     if (search) {
-      whereClause.name = { contains: search };  // Tanpa 'mode'
+      whereClause.name = { contains: search };  
     }
 
     const events = await prisma.event.findMany({
