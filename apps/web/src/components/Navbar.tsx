@@ -43,7 +43,7 @@ export const Navbar = () => {
   const isPathname =
     pathname === "/login" ||
     pathname === "/register" ||
-    pathname.includes("/dashboard");
+    pathname.includes("/da");
 
   if (isPathname) {
     return null;
@@ -112,10 +112,10 @@ export const Navbar = () => {
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Link
-                            href="/profile"
+                            href="/orders"
                             className="w-full hover:text-color2"
                           >
-                            My Ticket
+                            My Order
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />

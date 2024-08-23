@@ -1,5 +1,6 @@
 import { createVoucherService } from '@/services/voucher/create-voucher.service';
 import { getVouchersService } from '@/services/voucher/get-vouchers.Service';
+
 import { NextFunction, Request, Response } from 'express';
 
 export class VoucherController {

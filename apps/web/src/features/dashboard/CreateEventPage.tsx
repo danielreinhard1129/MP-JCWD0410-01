@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useGetCategories from "@/hooks/api/category/useGetCategories";
+import Link from "next/link";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -28,8 +29,6 @@ const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
 const CreateEventPage = () => {
   const { mutateAsync: createEvent, isPending } = useCreateEvent();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
-
-  console.log(selectedCategoryId);
 
   const formik = useFormik({
     initialValues: {
@@ -51,8 +50,9 @@ const CreateEventPage = () => {
 
   const handleSelectCategory = (value: string) => {
     setSelectedCategoryId(Number(value));
+    refetch();
   };
-  const { data: item } = useGetCategories();
+  const { data: item, refetch } = useGetCategories();
 
   const [selectedImage, setSelectedImage] = useState<string>("");
   const thumbnailRef = useRef<HTMLInputElement>(null);
@@ -98,24 +98,32 @@ const CreateEventPage = () => {
             isError={!!formik.touched.location && !!formik.errors.location}
             error={formik.errors.location}
           />
-          <Select onValueChange={handleSelectCategory}>
-            <SelectTrigger>
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Category</SelectLabel>
-                {item?.map((category, index: number) => {
-                  return (
-                    <SelectItem key={index} value={String(category.id)}>
-                      {category.title.charAt(0).toUpperCase() +
-                        category.title.slice(1).toLowerCase()}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <div className="space-y-2">
+            <Select onValueChange={handleSelectCategory}>
+              <SelectTrigger>
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Category</SelectLabel>
+                  {item?.map((category, index: number) => {
+                    return (
+                      <SelectItem key={index} value={String(category.id)}>
+                        {category.title.charAt(0).toUpperCase() +
+                          category.title.slice(1).toLowerCase()}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <Link
+              href="/dashboard/event/create-category"
+              className="flex justify-end text-sm text-color2"
+            >
+              create category for your event
+            </Link>
+          </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
               <Label htmlFor="startDate">Start Date</Label>
@@ -126,7 +134,7 @@ const CreateEventPage = () => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Label htmlFor="startDate">End Date</Label>
+              <Label htmlFor="endDate">End Date</Label>
               <DateTimePicker
                 onDateTimeChange={(date) =>
                   formik.setFieldValue("endDate", date)
@@ -146,16 +154,6 @@ const CreateEventPage = () => {
               error={formik.errors.price}
             />
             <FormInput
-              name="discount"
-              label="Discount"
-              type="number"
-              value={formik.values.discount}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              isError={!!formik.touched.discount && !!formik.errors.discount}
-              error={formik.errors.discount}
-            />
-            <FormInput
               name="quota"
               label="Quota"
               type="number"
@@ -165,12 +163,23 @@ const CreateEventPage = () => {
               isError={!!formik.touched.quota && !!formik.errors.quota}
               error={formik.errors.quota}
             />
+            <FormInput
+              name="discount"
+              label="Discount"
+              type="number"
+              value={formik.values.discount}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              isError={!!formik.touched.discount && !!formik.errors.discount}
+              error={formik.errors.discount}
+            />
           </div>
           <RichTextEditor
             label="Description"
             onChange={(html: string) =>
               formik.setFieldValue("description", html)
             }
+            // onBlur={formik.handleBlur}
             isError={Boolean(formik.errors.description)}
             value={formik.values.description}
           />

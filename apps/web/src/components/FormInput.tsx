@@ -31,7 +31,7 @@ const FormInput: FC<FormInputProps> = ({
   classname,
 }) => {
   return (
-    <div className={`flex flex-col space-y-1.5 ${classname}`}>
+    <div className={`flex flex-col space-y-2 ${classname}`}>
       <Label htmlFor={name}>{label}</Label>
       <Input
         name={name}

@@ -8,8 +8,17 @@ interface MarkdownProps {
 
 const Markdown: FC<MarkdownProps> = ({ description }) => {
   const renderers: Components = {
-    h2: ({ children }) => <h2 className="text-xl font-bold">{children}</h2>,
+    h1: ({ children }) => <h1 className="text-2xl">{children}</h1>,
+    h2: ({ children }) => <h2 className="text-xl">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-lg">{children}</h3>,
     p: ({ children }) => <p className="text-sm font-light">{children}</p>,
+    ol: ({ children }) => (
+      <ol className="list-decimal space-y-1 pl-5">{children}</ol>
+    ),
+    ul: ({ children }) => (
+      <ul className="list-disc space-y-1 pl-5">{children}</ul>
+    ),
+    li: ({ children }) => <li className="text-sm">{children}</li>,
   };
   return (
     <ReactMarkDown rehypePlugins={[rehypeRaw]} components={renderers}>

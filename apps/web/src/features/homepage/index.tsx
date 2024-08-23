@@ -1,11 +1,10 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import Category from "./component/Category";
-import Jumbotron from "./component/Jumbotron";
-import TopEvent from "./component/TopEvent";
-
-import UpcomingEvent from "./component/UpcomingEvent";
+import Jumbotron from "./components/Jumbotron";
+import TopEvent from "./components/TopEvent";
+import UpcomingEvent from "./components/UpcomingEvent";
+import Category from "./components/Category";
 
 const words = `Live the Moment, Love the Experience`;
 

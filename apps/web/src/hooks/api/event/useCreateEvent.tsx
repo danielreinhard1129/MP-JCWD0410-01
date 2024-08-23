@@ -29,6 +29,8 @@ const useCreateEvent = () => {
       //karena createnya bawa image jadi harus pake form data
       const createEventForm = new FormData();
 
+      //FormData hanya menerima nilai-nilai dalam bentuk string atau objek Blob (seperti file)
+      // Nama kunci (key) dalam FormData harus sesuai dengan nama parameter atau field yang diterima oleh server atau backend API.
       createEventForm.append("name", payload.name);
       createEventForm.append("description", payload.description);
       createEventForm.append("location", payload.location);

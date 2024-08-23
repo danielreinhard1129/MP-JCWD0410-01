@@ -1,130 +1,152 @@
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter dari next/navigation
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { Button } from "../ui/button";
+import { IoIosCreate } from "react-icons/io";
+import { FaPlus } from "react-icons/fa6";
+import Link from "next/link";
 
-interface Voucher {
+interface Event {
   id: number;
-  eventId: number;
+  category: string;
   name: string;
-  code: string;
+  thumbnail: string;
+  description: string;
+  location: string;
+  start_date: string;
+  end_date: string;
+  price: string;
+  discount: string;
   quota: number;
-  nominal: string;
-  claimed: number;
-  expDate: string;
 }
 
-const vouchers: Voucher[] = [
+const events: Event[] = [
   {
     id: 1,
-    eventId: 101,
+    category: "Music",
     name: "Concert A",
-    code: "CONA123",
+    thumbnail: "https://via.placeholder.com/50",
+    description: "A wonderful music concert.",
+    location: "New York",
+    start_date: "2024-09-01",
+    end_date: "2024-09-02",
+    price: "$100",
+    discount: "10%",
     quota: 100,
-    nominal: "$100",
-    claimed: 50,
-    expDate: "2024-09-02",
   },
   {
     id: 2,
-    eventId: 102,
+    category: "Art",
     name: "Art Exhibition",
-    code: "ARTE456",
+    thumbnail: "https://via.placeholder.com/50",
+    description: "An amazing art exhibition.",
+    location: "Paris",
+    start_date: "2024-10-05",
+    end_date: "2024-10-10",
+    price: "$50",
+    discount: "5%",
     quota: 200,
-    nominal: "$50",
-    claimed: 120,
-    expDate: "2024-10-10",
   },
-  // Tambahkan lebih banyak voucher jika diperlukan
+  // Add more events as needed
 ];
 
-const VoucherTable: React.FC = () => {
-  const router = useRouter(); // Gunakan useRouter untuk navigasi
+const EventTable: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"view" | "create">("view");
-  const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
-  const [dropdownOpen, setDropdownOpen] = useState<number | null>(null); // Track dropdown state for each voucher
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState<number | null>(null); // Track dropdown state for each event
 
-  const handleIconClick = (voucherId: number) => {
-    setDropdownOpen(voucherId === dropdownOpen ? null : voucherId); // Toggle dropdown visibility
+  const handleIconClick = (eventId: number) => {
+    setDropdownOpen(eventId === dropdownOpen ? null : eventId); // Toggle dropdown visibility
   };
 
-  const handleViewDetails = (voucher: Voucher) => {
-    setSelectedVoucher(voucher);
+  const handleViewDetails = (event: Event) => {
+    setSelectedEvent(event);
     setModalType("view");
     setModalOpen(true);
     setDropdownOpen(null); // Close dropdown after selecting an option
   };
 
-  const handleCreateVoucher = () => {
-    // Navigasi ke halaman "/create-voucher" alih-alih membuka modal
-    router.push("/dashboard/transaction/create-voucher");
+  const handleCreateEvent = () => {
+    setSelectedEvent(null);
+    setModalType("create");
+    setModalOpen(true);
+    setDropdownOpen(null); // Close dropdown after selecting an option
   };
 
   const closeModal = () => {
     setModalOpen(false);
-    setSelectedVoucher(null);
+    setSelectedEvent(null);
   };
 
   const handleConfirm = () => {
     // Implement the logic to save the changes
-    console.log("Voucher updated successfully!");
+    console.log("Event updated successfully!");
     closeModal();
   };
 
   return (
     <div className="rounded-lg bg-white p-4 shadow-md">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-bold">Voucher</h2>
-        <button
-          onClick={handleCreateVoucher}
-          className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-        >
-          Create+
-        </button>
-      </div>
+      <Link
+        href="/dashboard/event/create-event"
+        className="flex items-center justify-between pb-4"
+      >
+        <h2 className="mb-4 text-xl font-bold">Event List</h2>
+        <Button className="bg-color2 hover:bg-color1">
+          <FaPlus className="mr-2 text-xl" />
+          Create Event
+        </Button>
+      </Link>
       <div className="overflow-x-auto">
         <table className="min-w-full border bg-white">
           <thead>
             <tr>
               <th className="border-b px-4 py-2 text-left">ID</th>
-              <th className="border-b px-4 py-2 text-left">Event ID</th>
+              <th className="border-b px-4 py-2 text-left">Category</th>
               <th className="border-b px-4 py-2 text-left">Name</th>
-              <th className="border-b px-4 py-2 text-left">Code</th>
+              <th className="border-b px-4 py-2 text-left">Thumbnail</th>
+              <th className="border-b px-4 py-2 text-left">Start Date</th>
+              <th className="border-b px-4 py-2 text-left">End Date</th>
+              <th className="border-b px-4 py-2 text-left">Price</th>
+              <th className="border-b px-4 py-2 text-left">Discount</th>
               <th className="border-b px-4 py-2 text-left">Quota</th>
-              <th className="border-b px-4 py-2 text-left">Nominal</th>
-              <th className="border-b px-4 py-2 text-left">Claimed</th>
-              <th className="border-b px-4 py-2 text-left">Exp. Date</th>
               <th className="border-b px-4 py-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {vouchers.map((voucher) => (
-              <tr key={voucher.id}>
-                <td className="border-b px-4 py-2">{voucher.id}</td>
-                <td className="border-b px-4 py-2">{voucher.eventId}</td>
-                <td className="border-b px-4 py-2">{voucher.name}</td>
-                <td className="border-b px-4 py-2">{voucher.code}</td>
-                <td className="border-b px-4 py-2">{voucher.quota}</td>
-                <td className="border-b px-4 py-2">{voucher.nominal}</td>
-                <td className="border-b px-4 py-2">{voucher.claimed}</td>
-                <td className="border-b px-4 py-2">{voucher.expDate}</td>
+            {events.map((event) => (
+              <tr key={event.id}>
+                <td className="border-b px-4 py-2">{event.id}</td>
+                <td className="border-b px-4 py-2">{event.category}</td>
+                <td className="border-b px-4 py-2">{event.name}</td>
+                <td className="border-b px-4 py-2">
+                  <img
+                    src={event.thumbnail}
+                    alt={event.name}
+                    className="h-12 w-12"
+                  />
+                </td>
+                <td className="border-b px-4 py-2">{event.start_date}</td>
+                <td className="border-b px-4 py-2">{event.end_date}</td>
+                <td className="border-b px-4 py-2">{event.price}</td>
+                <td className="border-b px-4 py-2">{event.discount}</td>
+                <td className="border-b px-4 py-2">{event.quota}</td>
                 <td className="relative border-b px-4 py-2 text-center">
-                  <button onClick={() => handleIconClick(voucher.id)}>
+                  <button onClick={() => handleIconClick(event.id)}>
                     <EllipsisVerticalIcon className="h-5 w-5 text-gray-600" />
                   </button>
-                  {dropdownOpen === voucher.id && (
+                  {dropdownOpen === event.id && (
                     <div className="absolute right-0 z-10 mt-2 w-48 rounded border bg-white py-2 shadow-xl">
                       <button
-                        onClick={() => handleViewDetails(voucher)}
+                        onClick={() => handleViewDetails(event)}
                         className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                       >
                         View Details
                       </button>
                       <button
-                        onClick={handleCreateVoucher}
+                        onClick={handleCreateEvent}
                         className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        Edit Voucher
+                        Edit Event
                       </button>
                     </div>
                   )}
@@ -149,31 +171,37 @@ const VoucherTable: React.FC = () => {
             >
               &times; {/* Close button */}
             </button>
-            {modalType === "view" && selectedVoucher ? (
+            {modalType === "view" && selectedEvent ? (
               <>
-                <h3 className="mb-4 text-lg font-semibold">Voucher Details</h3>
+                <h3 className="mb-4 text-lg font-semibold">Event Details</h3>
                 <p>
-                  <strong>Name:</strong> {selectedVoucher.name}
+                  <strong>Name:</strong> {selectedEvent.name}
                 </p>
                 <p>
-                  <strong>Code:</strong> {selectedVoucher.code}
+                  <strong>Description:</strong> {selectedEvent.description}
                 </p>
                 <p>
-                  <strong>Quota:</strong> {selectedVoucher.quota}
+                  <strong>Location:</strong> {selectedEvent.location}
                 </p>
                 <p>
-                  <strong>Nominal:</strong> {selectedVoucher.nominal}
+                  <strong>Start Date:</strong> {selectedEvent.start_date}
                 </p>
                 <p>
-                  <strong>Claimed:</strong> {selectedVoucher.claimed}
+                  <strong>End Date:</strong> {selectedEvent.end_date}
                 </p>
                 <p>
-                  <strong>Exp. Date:</strong> {selectedVoucher.expDate}
+                  <strong>Price:</strong> {selectedEvent.price}
+                </p>
+                <p>
+                  <strong>Discount:</strong> {selectedEvent.discount}
+                </p>
+                <p>
+                  <strong>Quota:</strong> {selectedEvent.quota}
                 </p>
               </>
             ) : (
               <>
-                <h3 className="mb-4 text-lg font-semibold">Edit Voucher</h3>
+                <h3 className="mb-4 text-lg font-semibold">Edit Event</h3>
                 <form className="space-y-4">
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
@@ -187,10 +215,10 @@ const VoucherTable: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
-                        Event ID
+                        Category
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                       />
                     </div>
@@ -207,7 +235,7 @@ const VoucherTable: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
-                        Code
+                        Thumbnail
                       </label>
                       <input
                         type="text"
@@ -218,16 +246,13 @@ const VoucherTable: React.FC = () => {
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
-                        Quota
+                        Description
                       </label>
-                      <input
-                        type="number"
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                      />
+                      <textarea className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
-                        Nominal
+                        Location
                       </label>
                       <input
                         type="text"
@@ -238,22 +263,51 @@ const VoucherTable: React.FC = () => {
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
-                        Claimed
-                      </label>
-                      <input
-                        type="number"
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Exp. Date
+                        Start Date
                       </label>
                       <input
                         type="date"
                         className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                       />
                     </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        End Date
+                      </label>
+                      <input
+                        type="date"
+                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Price
+                      </label>
+                      <input
+                        type="text"
+                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Discount
+                      </label>
+                      <input
+                        type="text"
+                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Quota
+                    </label>
+                    <input
+                      type="number"
+                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                    />
                   </div>
                   <div className="text-right">
                     <button
@@ -274,4 +328,4 @@ const VoucherTable: React.FC = () => {
   );
 };
 
-export default VoucherTable;
+export default EventTable;

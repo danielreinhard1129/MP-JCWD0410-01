@@ -12,7 +12,9 @@ export class TransactionController {
         sortBy: (req.query.sortBy as string) || 'createdAt',
         search: (req.query.search as string) || '',
         status: req.query.status ? (req.query.status as Status) : undefined,
-        paymentMethod: req.query.paymentMethod ? (req.query.paymentMethod as PaymentMethod) : undefined,
+        paymentMethod: req.query.paymentMethod
+          ? (req.query.paymentMethod as PaymentMethod)
+          : undefined,
       };
 
       const result = await getTransactionsService(query);

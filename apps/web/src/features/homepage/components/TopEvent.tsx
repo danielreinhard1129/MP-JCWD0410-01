@@ -21,8 +21,8 @@ const TopEvent = () => {
             Top Picks!
           </div>
           <div>
-            Discover the most popular events on Tixify that you’re sure to
-            enjoy.
+            Discover the most popular events on Tixify <br /> that you’re sure
+            to enjoy.
           </div>
         </div>
         <Marquee

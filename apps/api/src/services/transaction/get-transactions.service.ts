@@ -13,7 +13,8 @@ interface GetTransactionsService {
 
 export const getTransactionsService = async (query: GetTransactionsService) => {
   try {
-    const { page, take, sortBy, sortOrder, search, status, paymentMethod } = query;
+    const { page, take, sortBy, sortOrder, search, status, paymentMethod } =
+      query;
 
     const whereClause: Prisma.TransactionWhereInput = {};
 
@@ -27,10 +28,7 @@ export const getTransactionsService = async (query: GetTransactionsService) => {
 
     if (search) {
       whereClause.user = {
-        OR: [
-          { name: { contains: search } },
-          { email: { contains: search } },
-        ],
+        OR: [{ name: { contains: search } }, { email: { contains: search } }],
       };
     }
 

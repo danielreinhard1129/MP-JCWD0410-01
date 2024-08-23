@@ -1,31 +1,3 @@
-// import { FC, useState } from "react";
-// import DatePicker from "react-datepicker";
-
-// interface DatePickerInputProps {
-//   date: Date;
-//   onChange: (date: Date | null) => void;
-// }
-
-// const DatePickerInput: FC<DatePickerInputProps> = ({ date, onChange }) => {
-//   const ExampleCustomTimeInput = ({ date, value, onChange }: any) => (
-//     <input
-//       value={value}
-//       onChange={(e) => onChange(e.target.value)}
-//       style={{ border: "solid 1px pink" }}
-//     />
-//   );
-//   return (
-//     <DatePicker
-//       selected={date}
-//       onChange={onChange}
-//       showTimeInput
-//       customTimeInput={<ExampleCustomTimeInput />}
-//     />
-//   );
-// };
-
-// export default DatePickerInput;
-
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -40,7 +12,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   initialDateTime,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
-    initialDateTime || new Date(),
+    initialDateTime || null,
   );
 
   const handleChange = (date: Date | null) => {
@@ -60,6 +32,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
       dateFormat="MMMM d, yyyy h:mm aa"
       timeCaption="time"
       className="w-full rounded-md border-[1px] p-2 text-sm"
+      placeholderText="Click to select a date"
     />
   );
 };

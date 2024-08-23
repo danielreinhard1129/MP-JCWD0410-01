@@ -21,7 +21,7 @@ const UpcomingEvent = () => {
             href="/events"
             className="flex items-center justify-between gap-2 text-color2"
           >
-            <div>Find more events</div>
+            v<div>Find more events</div>
             <div>
               <IoIosArrowForward />
             </div>
