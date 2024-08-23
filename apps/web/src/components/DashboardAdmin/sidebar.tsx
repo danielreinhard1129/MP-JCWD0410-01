@@ -67,7 +67,7 @@ const menuItems: MenuItem[] = [
       { title: "Event Category", path: "/dashboard/event/create-category" },
       { title: "Voucher", path: "/dashboard/event/voucher" },
       { title: "Statistik", path: "/statistik" },
-      { title: "Transaction", path: "/transaction" },
+      { title: "Transaction", path: "/dashboard/transaction/transaction" },
     ],
   },
   {

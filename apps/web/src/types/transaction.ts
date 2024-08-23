@@ -20,6 +20,11 @@ export interface Transaction {
     endDate: string;
     location: string;
   };
+  user: {
+    name: string;
+    email: string;
+    profilePic?: string;
+  };
 }
 
 export enum Status {
