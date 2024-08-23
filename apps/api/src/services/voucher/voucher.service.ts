@@ -17,7 +17,6 @@
 //     categoryId,
 //     price, // Add the missing price field
 //   } = body;
-
 //   try {
 //     const newEvent = await prisma.event.create({
 //       data: {
@@ -36,7 +35,6 @@
 //         price, // Include the price field
 //       },
 //     });
-
 //     return newEvent;
 //   } catch (error) {
 //     throw error;

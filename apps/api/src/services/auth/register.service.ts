@@ -1,7 +1,7 @@
 import { hashPassword } from '@/lib/bcrypt';
 import prisma from '@/prisma';
 import { User } from '@prisma/client';
-import { nanoid } from 'nanoid'; 
+import { nanoid } from 'nanoid';
 
 export const registerService = async (body: Partial<User>) => {
   try {
@@ -22,8 +22,8 @@ export const registerService = async (body: Partial<User>) => {
     }
 
     // Jika ada referral, lakukan validasi dan assign ke const
-    const referrer = referral 
-      ? await prisma.user.findFirst({ where: { referral } }) 
+    const referrer = referral
+      ? await prisma.user.findFirst({ where: { referral } })
       : null;
 
     if (referral && !referrer) {
@@ -40,7 +40,9 @@ export const registerService = async (body: Partial<User>) => {
 
       // Batasi penggunaan referral code hingga maksimal 3 kali
       if (referralUsageCount >= 3) {
-        throw new Error('Referral code has reached its maximum usage limit of 3.');
+        throw new Error(
+          'Referral code has reached its maximum usage limit of 3.',
+        );
       }
     }
 
@@ -83,7 +85,10 @@ export const registerService = async (body: Partial<User>) => {
             where: { userId: referrer.id },
             data: {
               points: existingUserPoint.points + 10000, // Tambah poin referrer sebanyak 10.000
-              expDate: pointsExpirationDate > existingUserPoint.expDate ? pointsExpirationDate : existingUserPoint.expDate,
+              expDate:
+                pointsExpirationDate > existingUserPoint.expDate
+                  ? pointsExpirationDate
+                  : existingUserPoint.expDate,
             },
           });
         } else {
@@ -107,7 +112,7 @@ export const registerService = async (body: Partial<User>) => {
             code: nanoid(), // Menggunakan nanoid untuk generate reward code
             quota: 1,
             nominal: 500, // Nominal reward
-            claimed:1,
+            claimed: 1,
             expDate: rewardExpirationDate,
           },
         });

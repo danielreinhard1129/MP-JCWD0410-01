@@ -9,8 +9,8 @@ interface EventCardProps {
   name: string;
   thumbnail: string;
   location: string;
-  start_date: string;
-  end_date: string;
+  startDate: string;
+  endDate: string;
   price: number;
   organizer: string;
   profilePic?: string;
@@ -22,15 +22,15 @@ const EventCard: FC<EventCardProps> = ({
   name,
   thumbnail,
   location,
-  start_date,
-  end_date,
+  startDate,
+  endDate,
   price,
   organizer,
   profilePic,
   className,
 }) => {
-  const formattedStartDate = format(new Date(start_date), "yyyy-MM-dd");
-  const formattedEndDate = format(new Date(end_date), "yyyy-MM-dd");
+  const formattedStartDate = format(new Date(startDate), "yyyy-MM-dd");
+  const formattedEndDate = format(new Date(endDate), "yyyy-MM-dd");
   return (
     <>
       <div className={`rounded-lg bg-white text-black shadow ${className}`}>
@@ -50,8 +50,8 @@ const EventCard: FC<EventCardProps> = ({
             </div>
             <div className="text-sm text-neutral-500">
               {formattedStartDate === formattedEndDate
-                ? format(new Date(start_date), "dd MMM yyyy")
-                : `${format(new Date(start_date), "dd MMM yyyy")} - ${format(new Date(end_date), "dd MMM yyyy")}`}
+                ? format(new Date(startDate), "dd MMM yyyy")
+                : `${format(new Date(startDate), "dd MMM yyyy")} - ${format(new Date(endDate), "dd MMM yyyy")}`}
             </div>
           </div>
           <div className="flex items-center gap-2 text-sm">

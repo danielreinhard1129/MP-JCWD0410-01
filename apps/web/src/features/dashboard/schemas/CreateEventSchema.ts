@@ -8,4 +8,8 @@ export const CreateEventSchema = Yup.object().shape({
   location: Yup.string().required("Location is required"),
   description: Yup.string().required("Description is required"),
   thumbnail: Yup.mixed().nullable().required("Thumbnail is required"),
+  price: Yup.number().required("Price is required"),
+  quota: Yup.number()
+    .min(1, "Qouta must be at least 1")
+    .required("Quota is required"),
 });

@@ -19,13 +19,13 @@ const useCreateTransaction = () => {
   return useMutation({
     mutationFn: async (payload: CreateTransactionPayload) => {
       // Sending payload as JSON directly
-      const { data } = await axiosInstance.post("/api/transaction", payload);
+      const { data } = await axiosInstance.post("/api/transactions", payload);
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Create Transaction success");
-      queryClient.invalidateQueries({ queryKey: ["transaction"] });
-      router.push("/");
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      router.push(`/orders/${data.id}`);
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data);

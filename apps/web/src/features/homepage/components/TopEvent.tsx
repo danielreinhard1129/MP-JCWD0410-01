@@ -21,8 +21,8 @@ const TopEvent = () => {
             Top Picks!
           </div>
           <div>
-            Discover the most popular events on Tixify that you’re sure to
-            enjoy.
+            Discover the most popular events on Tixify <br /> that you’re sure
+            to enjoy.
           </div>
         </div>
         <Marquee
@@ -41,8 +41,8 @@ const TopEvent = () => {
                   name={event.name}
                   thumbnail={event.thumbnail}
                   location={event.location}
-                  start_date={event.start_date}
-                  end_date={event.end_date}
+                  startDate={event.startDate}
+                  endDate={event.endDate}
                   price={event.price}
                   organizer={event.user.name}
                   profilePic={event.user.profilePic}

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import useCreateCategory from "@/hooks/api/category/useCreateCategories";
 import { useFormik } from "formik";
 import { CreateCategorySchema } from "./schemas/CreateCategorySchema";
+import { SpinnerCircular } from "spinners-react";
 
 const CreateCategoryPage = () => {
   const { mutateAsync: createCategory, isPending } = useCreateCategory();
@@ -47,7 +48,16 @@ const CreateCategoryPage = () => {
             className="fle flex w-1/6 self-end bg-color3 hover:bg-color2"
             disabled={isPending}
           >
-            {isPending ? "Loading..." : "Submit"}
+            {isPending ? (
+              <>
+                <div className="flex justify-center gap-2">
+                  <SpinnerCircular color="#ffffff" size={20} />
+                  Processing...
+                </div>
+              </>
+            ) : (
+              "Submit"
+            )}
           </Button>
         </form>
       </div>

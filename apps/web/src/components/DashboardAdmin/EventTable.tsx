@@ -1,8 +1,9 @@
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import React, { useState } from "react";
-import { FaPlus } from "react-icons/fa6";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Button } from "../ui/button";
+import { IoIosCreate } from "react-icons/io";
+import { FaPlus } from "react-icons/fa6";
+import Link from "next/link";
 
 interface Event {
   id: number;

@@ -1,15 +1,16 @@
 "use client";
 
 import { axiosInstance } from "@/lib/axios";
-import { signOut, useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 const useAxios = () => {
-  const session = useSession();
   useEffect(() => {
     const requestIntercept = axiosInstance.interceptors.request.use(
-      (config) => {
-        const token = session.data?.user.token;
+      async (config) => {
+        const session = await getSession();
+
+        const token = session?.user.token;
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -35,7 +36,7 @@ const useAxios = () => {
       axiosInstance.interceptors.request.eject(requestIntercept);
       axiosInstance.interceptors.response.eject(responseIntercept);
     };
-  }, [session.data?.user.token]);
+  }, []);
 
   return { axiosInstance };
 };

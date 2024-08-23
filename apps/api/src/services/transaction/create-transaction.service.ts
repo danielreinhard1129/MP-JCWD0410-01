@@ -1,24 +1,49 @@
 import prisma from '@/prisma';
+import { PaymentMethod } from '@prisma/client';
 
 interface CreateTransactionBody {
   qty: number;
   eventId: number;
+  paymentMethod: PaymentMethod;
 }
 
-export const createCategoryService = async (body: CreateTransactionBody) => {
+export const createTransactionService = async (
+  body: CreateTransactionBody,
+  userId: number,
+) => {
   try {
-    const { qty, eventId } = body;
+    const { qty, eventId, paymentMethod } = body;
 
-    // const transaction = await prisma.transaction.findFirst({
-    //   where: { },
-    // });
+    const event = await prisma.event.findFirst({
+      where: { id: eventId },
+    });
 
-    // if (transaction) {
-    //   throw new Error('Category already exist');
-    // }
+    if (!event) {
+      throw new Error('Invalid event id');
+    }
 
-    return prisma.transaction.create({
-      data: { qty, eventId },
+    if (event.quota - event.booked < qty) {
+      throw new Error('Ticket quota exceeded.');
+    }
+
+    await prisma.event.update({
+      where: { id: eventId },
+      data: {
+        booked: {
+          increment: qty,
+        },
+      },
+    });
+
+    return await prisma.transaction.create({
+      data: {
+        qty,
+        eventId,
+        userId,
+        total: event.price * qty,
+        status: `WAIITNG_FOR_PAYMENT`,
+        paymentMethod,
+      },
     });
   } catch (error) {
     throw error;
