@@ -1,4 +1,4 @@
-import { Prisma, Status, PaymentMethod } from '@prisma/client'; // Pastikan ini diimpor dengan benar
+import { Prisma, Status, PaymentMethod } from '@prisma/client';
 import prisma from '../../prisma';
 
 interface GetTransactionsService {
@@ -7,14 +7,13 @@ interface GetTransactionsService {
   sortBy: string;
   sortOrder: string;
   search?: string;
-  status?: Status; // Pastikan ini menggunakan tipe yang benar
-  paymentMethod?: PaymentMethod; // Pastikan ini menggunakan tipe yang benar
+  status?: Status;
+  paymentMethod?: PaymentMethod;
 }
 
 export const getTransactionsService = async (query: GetTransactionsService) => {
   try {
-    const { page, take, sortBy, sortOrder, search, status, paymentMethod } =
-      query;
+    const { page, take, sortBy, sortOrder, search, status, paymentMethod } = query;
 
     const whereClause: Prisma.TransactionWhereInput = {};
 
@@ -26,9 +25,12 @@ export const getTransactionsService = async (query: GetTransactionsService) => {
       whereClause.paymentMethod = paymentMethod;
     }
 
+    // Filter berdasarkan event.name jika search diisi
     if (search) {
-      whereClause.user = {
-        OR: [{ name: { contains: search } }, { email: { contains: search } }],
+      whereClause.event = {
+        name: {
+          contains: search,
+        },
       };
     }
 
