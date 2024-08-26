@@ -6,7 +6,7 @@ interface GetEventsService {
   take: number;
   sortBy: string;
   sortOrder: string;
-  search?: string;
+  search: string;
   location?: string;
   category?: string;
 }
@@ -31,6 +31,7 @@ export const getEventsService = async (query: GetEventsService) => {
 
     if (search) {
       whereClause.name = { contains: search };
+      whereClause.name = { contains: search };
     }
 
     const events = await prisma.event.findMany({
@@ -45,6 +46,7 @@ export const getEventsService = async (query: GetEventsService) => {
           include: { userPoints: true },
         },
         category: {
+          // Include related category information
           select: {
             title: true,
           },

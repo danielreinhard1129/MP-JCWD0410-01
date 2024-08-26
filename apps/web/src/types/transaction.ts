@@ -23,6 +23,11 @@ export interface Transaction {
       userId: number;
     }[];
   };
+  user: {
+    name: string;
+    email: string;
+    profilePic?: string;
+  };
 }
 
 export enum Status {
