@@ -11,6 +11,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { IoTime } from "react-icons/io5";
 import { MdDateRange } from "react-icons/md";
 import BuyEvent from "./components/BuyEvent";
+import Link from "next/link";
 
 const EventDetailPage = () => {
   const { id: eventId } = useParams<{ id: string }>();
@@ -27,6 +28,14 @@ const EventDetailPage = () => {
   const toggleTicket = () => {
     setIsOpenTicket(true);
     setIsOpenDescription(false);
+
+    const ticketSection = document.getElementById("ticket");
+    if (ticketSection) {
+      window.scrollTo({
+        top: ticketSection.offsetTop,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (
@@ -41,7 +50,7 @@ const EventDetailPage = () => {
               <Image
                 src={data.thumbnail}
                 alt="Thumbnail"
-                layout="fill"
+                fill
                 className="absolute inset-0 h-full w-full object-cover"
               />
             )}
@@ -110,10 +119,12 @@ const EventDetailPage = () => {
                       />
                     )}
                   </div>
-                  <div className="flex flex-col">
-                    <div className="text-sm opacity-50">Hosted by</div>
-                    <div className="text-sm">{data?.user.name}</div>
-                  </div>
+                  <Link href={`/organizer/${data?.user.id}`}>
+                    <div className="flex flex-col">
+                      <div className="text-sm opacity-50">Hosted by</div>
+                      <div className="text-sm">{data?.user.name}</div>
+                    </div>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -134,7 +145,7 @@ const EventDetailPage = () => {
           </div>
         </div>
 
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-10 md:grid-cols-3" id="ticket">
           <div className="col-span-2 flex flex-col">
             <div className="my-8 grid grid-cols-2 border-b-[2px] text-center">
               <button

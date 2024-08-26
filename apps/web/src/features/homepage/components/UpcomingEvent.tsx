@@ -7,6 +7,8 @@ import { IoIosArrowForward } from "react-icons/io";
 const UpcomingEvent = () => {
   const { data, isPending } = useGetEvents({
     take: 4,
+    sortBy: "startDate",
+    sortOrder: "desc",
   });
 
   return (
@@ -21,7 +23,7 @@ const UpcomingEvent = () => {
             href="/events"
             className="flex items-center justify-between gap-2 text-color2"
           >
-            v<div>Find more events</div>
+            <div>Find more events</div>
             <div>
               <IoIosArrowForward />
             </div>
@@ -50,6 +52,7 @@ const UpcomingEvent = () => {
                   price={event.price}
                   organizer={event.user.name}
                   profilePic={event.user.profilePic}
+                  profileOrganizer={`/organizer/${event.user.id}`}
                 />
               </Link>
             );

@@ -16,10 +16,16 @@ import { ChangeEvent } from "react";
 import { createTransactionSchema } from "../schemas/CreateTransactionSchemas";
 import useCreateTransaction from "@/hooks/api/transaction/useCreateTransaction";
 import { SpinnerCircular } from "spinners-react";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { Switch } from "@/components/ui/switch";
+import { useSession } from "next-auth/react";
+import useGetUser from "@/hooks/api/user/useGetUser";
 
 const BuyEvent = () => {
   const { id: eventId } = useParams<{ id: string }>();
   const { data } = useGetEventDetail(eventId);
+  const session = useSession();
+  const { data: user } = useGetUser(session.data?.user.id as number);
 
   const { mutateAsync: createTransaction, isPending } = useCreateTransaction();
 
@@ -31,6 +37,7 @@ const BuyEvent = () => {
       qty: 0,
       paymentMethod: "",
       eventId: data?.id || 0,
+      isPointUsed: false,
     },
     validationSchema: createTransactionSchema(maxQuantity),
     onSubmit: async (values) => {
@@ -83,6 +90,7 @@ const BuyEvent = () => {
               </div>
             )}
           </div>
+
           <div className="flex flex-col gap-2">
             <div className="text-right text-neutral-400">Quantity</div>
             <div className="flex justify-end">
@@ -115,6 +123,25 @@ const BuyEvent = () => {
           </div>
         </div>
 
+        <div className="flex justify-between">
+          <div className="space-y-2">
+            <div className="text-right text-neutral-400">Points</div>
+            <div>
+              {user && user.userPoints[0]?.points > 0
+                ? user?.userPoints[0].points
+                : 0}
+            </div>
+          </div>
+
+          <Switch
+            checked={formik.values.isPointUsed}
+            onCheckedChange={(checked) => {
+              formik.setFieldValue("isPointUsed", checked);
+            }}
+            disabled={user && user.userPoints[0]?.points <= 0 ? true : false}
+          />
+        </div>
+
         {maxQuantity > 0 ? (
           <div className="text-red-500">
             {maxQuantity <= formik.values.qty
@@ -125,7 +152,7 @@ const BuyEvent = () => {
           <div className="text-red-500">Ticket quota is not available.</div>
         )}
 
-        <div className="flex flex-col gap-2">
+        <div id="ticket" className="flex flex-col gap-2">
           <div className="text-neutral-400">Payment Method</div>
           <Select
             onValueChange={(value) =>
@@ -159,7 +186,11 @@ const BuyEvent = () => {
                   currency: "IDR",
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
-                }).format(data.price * formik.values.qty)}
+                }).format(
+                  formik.values.isPointUsed && user
+                    ? data.price * formik.values.qty - user.userPoints[0].points
+                    : data.price * formik.values.qty,
+                )}
               </div>
             )}
           </div>

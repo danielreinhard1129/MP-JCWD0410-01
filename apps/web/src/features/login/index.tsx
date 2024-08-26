@@ -26,18 +26,20 @@ const LoginPage = () => {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <div className="flex flex-col md:flex-row w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
-        <div className="relative w-full md:w-1/2 h-48 md:h-auto overflow-hidden">
+      <div className="flex w-full max-w-4xl flex-col overflow-hidden rounded-lg bg-white shadow-lg md:flex-row">
+        <div className="relative h-48 w-full overflow-hidden md:h-auto md:w-1/2">
           <Image
             src="/concert.avif"
             alt="Festival Picture"
-            layout="fill"
+            fill
             className="object-cover"
           />
         </div>
-        <div className="w-full md:w-1/2 p-8">
+        <div className="w-full p-8 md:w-1/2">
           <CardHeader className="mb-6">
-            <CardTitle className="text-xl md:text-2xl font-bold">Sign In</CardTitle>
+            <CardTitle className="text-xl font-bold md:text-2xl">
+              Sign In
+            </CardTitle>
             <p className="text-sm text-gray-600">
               Enter your email and password to Sign In.
             </p>
@@ -77,7 +79,7 @@ const LoginPage = () => {
                     </p>
                   ) : null}
                 </div>
-                <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="flex flex-col items-center justify-between md:flex-row">
                   <div className="flex items-center">
                     <input type="checkbox" id="terms" className="mr-2" />
                     <label htmlFor="terms" className="text-sm text-gray-600">
@@ -88,7 +90,7 @@ const LoginPage = () => {
                     </label>
                   </div>
                   <Link href="/forgot-password">
-                    <p className="text-sm text-blue-500 mt-2 md:mt-0">
+                    <p className="mt-2 text-sm text-blue-500 md:mt-0">
                       Forgot Password?
                     </p>
                   </Link>
@@ -101,8 +103,8 @@ const LoginPage = () => {
                 {isPending ? "Loading..." : "SIGN IN"}
               </Button>
 
-              <div className="mt-4 flex flex-col md:flex-row items-center justify-between">
-                <div className="flex items-center mb-2 md:mb-0">
+              <div className="mt-4 flex flex-col items-center justify-between md:flex-row">
+                <div className="mb-2 flex items-center md:mb-0">
                   <input type="checkbox" id="newsletter" className="mr-2" />
                   <label htmlFor="newsletter" className="text-sm text-gray-600">
                     Subscribe me to the newsletter
@@ -113,7 +115,7 @@ const LoginPage = () => {
               <div className="mt-4">
                 <Button
                   className="w-full border border-gray-300 bg-white text-gray-600"
-                  onClick={() => signIn('google')} // Trigger Google Sign-In
+                  onClick={() => signIn("google")} // Trigger Google Sign-In
                 >
                   SIGN IN WITH GOOGLE
                 </Button>
@@ -122,7 +124,7 @@ const LoginPage = () => {
               <div className="mt-4">
                 <Button
                   className="w-full border border-gray-300 bg-white text-gray-600"
-                  onClick={() => signIn('twitter')} // Trigger Twitter Sign-In
+                  onClick={() => signIn("twitter")} // Trigger Twitter Sign-In
                 >
                   SIGN IN WITH TWITTER
                 </Button>

@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/select";
 import useGetCategories from "@/hooks/api/category/useGetCategories";
 import Link from "next/link";
+import { SpinnerCircular } from "spinners-react";
+import { FaPlus } from "react-icons/fa6";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -34,24 +36,27 @@ const CreateEventPage = () => {
     initialValues: {
       name: "",
       description: "",
-      location: "",
       startDate: undefined,
       endDate: undefined,
       discount: 0,
       price: 0,
       quota: 0,
       thumbnail: null,
+      location: "",
     },
     validationSchema: CreateEventSchema,
     onSubmit: async (values) => {
-      await createEvent({ ...values, categoryId: selectedCategoryId });
+      await createEvent({
+        ...values,
+        categoryId: selectedCategoryId,
+      });
     },
   });
 
   const handleSelectCategory = (value: string) => {
     setSelectedCategoryId(Number(value));
-    refetch();
   };
+
   const { data: item, refetch } = useGetCategories();
 
   const [selectedImage, setSelectedImage] = useState<string>("");
@@ -74,7 +79,16 @@ const CreateEventPage = () => {
   return (
     <main className="container mx-auto px-4">
       <div className="mx-auto max-w-5xl">
-        <div className="pb-8 text-2xl font-semibold">Create Event</div>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-2xl font-semibold">Create Event</h2>
+          <Link href="/dashboard/event/create-category" className="text-white">
+            <Button className="bg-purple-600 hover:bg-color3">
+              <FaPlus className="mr-2 text-xl" />
+              Create Category
+            </Button>
+          </Link>
+        </div>
+
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <FormInput
             name="name"
@@ -87,7 +101,31 @@ const CreateEventPage = () => {
             isError={!!formik.touched.name && !!formik.errors.name}
             error={formik.errors.name}
           />
-          <FormInput
+          <div className="space-y-1">
+            <Label>Location</Label>
+            <Select
+              onValueChange={(value) => formik.setFieldValue("location", value)}
+              value={formik.values.location} // Make the Select controlled
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Location" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Location</SelectLabel>
+                  <SelectItem value="bali">Bali</SelectItem>
+                  <SelectItem value="bandung">Bandung</SelectItem>
+                  <SelectItem value="bogor">Bogor</SelectItem>
+                  <SelectItem value="jakarta">Jakarta</SelectItem>
+                  <SelectItem value="medan">Medan</SelectItem>
+                  <SelectItem value="palembang">Palembang</SelectItem>
+                  <SelectItem value="surabaya">Surabaya</SelectItem>
+                  <SelectItem value="yogyakarta">Yogyakarta</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          {/* <FormInput
             name="location"
             label="Location"
             type="text"
@@ -97,8 +135,9 @@ const CreateEventPage = () => {
             onChange={formik.handleChange}
             isError={!!formik.touched.location && !!formik.errors.location}
             error={formik.errors.location}
-          />
-          <div className="space-y-2">
+          /> */}
+          <div className="space-y-1">
+            <Label>Category</Label>
             <Select onValueChange={handleSelectCategory}>
               <SelectTrigger>
                 <SelectValue placeholder="Category" />
@@ -117,13 +156,8 @@ const CreateEventPage = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            <Link
-              href="/dashboard/event/create-category"
-              className="flex justify-end text-sm text-color2"
-            >
-              create category for your event
-            </Link>
           </div>
+
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
               <Label htmlFor="startDate">Start Date</Label>
@@ -142,6 +176,7 @@ const CreateEventPage = () => {
               />
             </div>
           </div>
+
           <div className="grid grid-cols-3 gap-2">
             <FormInput
               name="price"
@@ -185,7 +220,7 @@ const CreateEventPage = () => {
           />
           {selectedImage ? (
             <>
-              <div className="relative h-[150px] w-[200px]">
+              <div className="relative h-32 w-60">
                 <Image src={selectedImage} alt="Event thumbnail" fill />
               </div>
               <button onClick={removeSelectedImage}>remove</button>
@@ -206,7 +241,14 @@ const CreateEventPage = () => {
               className="mb-8 bg-color3 hover:bg-color2"
               disabled={isPending}
             >
-              {isPending ? "Loading..." : "Submit"}
+              {isPending ? (
+                <div className="flex justify-center gap-2">
+                  <SpinnerCircular color="#ffffff" size={20} />
+                  Processing...
+                </div>
+              ) : (
+                "Submit"
+              )}
             </Button>
           </div>
         </form>

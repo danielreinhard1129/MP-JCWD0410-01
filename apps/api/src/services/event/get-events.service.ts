@@ -20,17 +20,17 @@ export const getEventsService = async (query: GetEventsService) => {
     };
 
     if (location) {
-      whereClause.location = { contains: location };  
+      whereClause.location = { contains: location };
     }
 
     if (category) {
       whereClause.category = {
-        title: { contains: category }  
+        title: { contains: category },
       };
     }
 
     if (search) {
-      whereClause.name = { contains: search };  
+      whereClause.name = { contains: search };
     }
 
     const events = await prisma.event.findMany({
@@ -42,16 +42,14 @@ export const getEventsService = async (query: GetEventsService) => {
       },
       include: {
         user: {
-          select: {
-            name: true,
-            profilePic: true,
-          },
+          include: { userPoints: true },
         },
         category: {
           select: {
             title: true,
           },
         },
+        reviews: true,
       },
     });
 

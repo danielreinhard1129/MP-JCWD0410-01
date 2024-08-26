@@ -5,7 +5,7 @@ export const getEventService = async (id: number) => {
     const event = await prisma.event.findFirst({
       where: { id, isDeleted: false },
       include: {
-        user: { select: { name: true, profilePic: true } },
+        user: { include: { userPoints: true } },
         category: { select: { title: true } },
       },
     });

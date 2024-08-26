@@ -16,6 +16,8 @@ import { CategoryRouter } from './routers/category.router';
 import { VoucherRouter } from './routers/voucher.router';
 import { TransactionRouter } from './routers/transactions.router';
 import { TransactionUserRouter } from './routers/transaction.router';
+import { ReviewRouter } from './routers/review.router';
+import { UserRouter } from './routers/user.router';
 
 export default class App {
   public app: Express;
@@ -65,6 +67,8 @@ export default class App {
     const voucherRouter = new VoucherRouter();
     const transactionRouter = new TransactionRouter();
     const transactionUserRouter = new TransactionUserRouter();
+    const reviewRouter = new ReviewRouter();
+    const userRouter = new UserRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student API!`);
@@ -75,10 +79,10 @@ export default class App {
     this.app.use('/api/events', eventRouter.getRouter());
     this.app.use('/api/category', categoryRouter.getRouter());
     this.app.use('/api/voucher', voucherRouter.getRouter());
-
     this.app.use('/api/transactions', transactionUserRouter.getRouter());
-
     this.app.use('/api/transaction', transactionRouter.getRouter());
+    this.app.use('/api/reviews', reviewRouter.getRouter());
+    this.app.use('/api/users', userRouter.getRouter());
   }
 
   public start(): void {

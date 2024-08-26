@@ -48,7 +48,7 @@ const useCreateEvent = () => {
     onSuccess: () => {
       toast.success("Create event success");
       queryClient.invalidateQueries({ queryKey: ["events"] });
-      router.push("/");
+      router.push("/dashboard/event/eventpage");
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data);

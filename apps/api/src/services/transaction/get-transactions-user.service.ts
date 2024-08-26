@@ -4,7 +4,15 @@ export const getTransactionsUserService = async (userId: number) => {
   try {
     const transactions = await prisma.transaction.findMany({
       where: { userId },
-      include: { event: { select: { name: true, thumbnail: true } } },
+      include: {
+        event: {
+          include: {
+            reviews: {
+              where: { userId },
+            },
+          },
+        },
+      },
     });
 
     return transactions;

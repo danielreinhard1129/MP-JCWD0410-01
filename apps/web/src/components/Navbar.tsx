@@ -104,7 +104,7 @@ export const Navbar = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                           <Link
-                            href="/profile"
+                            href={`/profile/${session.user.id}`}
                             className="w-full hover:text-color2"
                           >
                             Profile
@@ -115,7 +115,7 @@ export const Navbar = () => {
                             href="/orders"
                             className="w-full hover:text-color2"
                           >
-                            My Order
+                            My Orders
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
@@ -190,12 +190,18 @@ export const Navbar = () => {
 
       {isOpenMenu && (
         <div className="h-screen border-t border-slate-200 bg-white text-black md:hidden">
-          <div className="flex flex-col gap-2 p-4">
+          <div className="flex flex-col gap-4 p-4">
             {session?.user ? (
               <>
-                <div className="text-lg font-semibold">Akun Saya</div>
-                <Link href="/profile" className="hover:text-button">
+                <div className="text-lg font-semibold">My Account</div>
+                <Link
+                  href={`/profile/${session.user.id}`}
+                  className="w-full hover:text-color2"
+                >
                   Profile
+                </Link>
+                <Link href="/orders" className="hover:text-button">
+                  My Orders
                 </Link>
                 <button
                   onClick={() => signOut()}

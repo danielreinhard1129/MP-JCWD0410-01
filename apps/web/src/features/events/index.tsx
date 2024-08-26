@@ -32,6 +32,8 @@ const EventPage = () => {
   const { data, isPending } = useGetEvents({
     page,
     take: 8,
+    sortBy: "startDate",
+    sortOrder: "desc",
     search: searchValue,
     category: selectedCategory,
     location: selectedLocation,
@@ -115,8 +117,12 @@ const EventPage = () => {
                 <SelectGroup>
                   <SelectLabel>Location</SelectLabel>
                   <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="jakarta">Jakarta</SelectItem>
+                  <SelectItem value="bali">Bali</SelectItem>
                   <SelectItem value="bandung">Bandung</SelectItem>
+                  <SelectItem value="bogor">Bogor</SelectItem>
+                  <SelectItem value="jakarta">Jakarta</SelectItem>
+                  <SelectItem value="medan">Medan</SelectItem>
+                  <SelectItem value="palembang">Palembang</SelectItem>
                   <SelectItem value="surabaya">Surabaya</SelectItem>
                   <SelectItem value="yogyakarta">Yogyakarta</SelectItem>
                 </SelectGroup>
@@ -147,6 +153,7 @@ const EventPage = () => {
                   price={event.price}
                   organizer={event.user.name}
                   profilePic={event.user.profilePic}
+                  profileOrganizer={`/organizer/${event.user.id}`}
                 />
               </Link>
             );
