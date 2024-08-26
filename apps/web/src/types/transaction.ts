@@ -19,6 +19,9 @@ export interface Transaction {
     startDate: string;
     endDate: string;
     location: string;
+    reviews: {
+      userId: number;
+    }[];
   };
   user: {
     name: string;

@@ -16,6 +16,7 @@ interface EventCardProps {
   profilePic?: string;
   className?: string;
   width?: string;
+  profileOrganizer: string;
 }
 
 const EventCard: FC<EventCardProps> = ({
@@ -28,6 +29,7 @@ const EventCard: FC<EventCardProps> = ({
   organizer,
   profilePic,
   className,
+  profileOrganizer,
 }) => {
   const formattedStartDate = format(new Date(startDate), "yyyy-MM-dd");
   const formattedEndDate = format(new Date(endDate), "yyyy-MM-dd");
@@ -72,19 +74,21 @@ const EventCard: FC<EventCardProps> = ({
               maximumFractionDigits: 0,
             }).format(price)}
           </div>
-          <div className="flex items-center gap-2 border-t-[1px] border-dashed border-neutral-200 pt-3 text-sm">
-            <div className="relative h-10 w-10 overflow-hidden rounded-full border-[1px] border-neutral-200">
-              {profilePic && (
-                <Image
-                  src={profilePic}
-                  alt="concert"
-                  fill
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              )}
+          <Link href={profileOrganizer}>
+            <div className="flex items-center gap-2 border-t-[1px] border-dashed border-neutral-200 pt-3 text-sm">
+              <div className="relative h-10 w-10 overflow-hidden rounded-full border-[1px] border-neutral-200">
+                {profilePic && (
+                  <Image
+                    src={profilePic}
+                    alt="concert"
+                    fill
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                )}
+              </div>
+              <div className="line-clamp-1">{organizer}</div>
             </div>
-            <div className="line-clamp-1">{organizer}</div>
-          </div>
+          </Link>
         </div>
       </div>
     </>

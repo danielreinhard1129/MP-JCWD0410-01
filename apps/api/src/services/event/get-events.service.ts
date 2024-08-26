@@ -20,14 +20,17 @@ export const getEventsService = async (query: GetEventsService) => {
     };
 
     if (location) {
-      whereClause.location = location;
+      whereClause.location = { contains: location };
     }
 
     if (category) {
-      whereClause.category = { title: category };
+      whereClause.category = {
+        title: { contains: category },
+      };
     }
 
     if (search) {
+      whereClause.name = { contains: search };
       whereClause.name = { contains: search };
     }
 
@@ -40,11 +43,7 @@ export const getEventsService = async (query: GetEventsService) => {
       },
       include: {
         user: {
-          // Include related user information
-          select: {
-            name: true,
-            profilePic: true,
-          },
+          include: { userPoints: true },
         },
         category: {
           // Include related category information
@@ -52,6 +51,7 @@ export const getEventsService = async (query: GetEventsService) => {
             title: true,
           },
         },
+        reviews: true,
       },
     });
 

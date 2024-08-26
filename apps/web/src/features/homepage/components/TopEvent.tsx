@@ -9,6 +9,7 @@ import Marquee from "react-fast-marquee";
 const TopEvent = () => {
   const { data } = useGetEvents({
     take: 5,
+    sortBy: "booked",
   });
   return (
     <div
@@ -47,6 +48,7 @@ const TopEvent = () => {
                   organizer={event.user.name}
                   profilePic={event.user.profilePic}
                   className="mr-4 line-clamp-1 w-72 text-left"
+                  profileOrganizer={`/organizer/${event.user.id}`}
                 />
               </Link>
             );

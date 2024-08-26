@@ -11,6 +11,7 @@ export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
 
     const user = await prisma.user.findFirst({
       where: { email, provider: 'CREDENTIALS' },
+      include: { userPoints: true },
     });
 
     if (!user) {

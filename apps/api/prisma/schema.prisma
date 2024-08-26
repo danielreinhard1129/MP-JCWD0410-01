@@ -55,7 +55,7 @@ enum Provider {
 
 model UserPoint {
   id        Int      @id @default(autoincrement())
-  points    Int
+  points    Int      @default(0)
   expDate   DateTime
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
@@ -126,7 +126,7 @@ model Review {
   userId    Int
   eventId   Int
   comment   String
-  rating    Int
+  rating    Int      @default(0)
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
 

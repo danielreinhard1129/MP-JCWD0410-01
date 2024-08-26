@@ -20,8 +20,6 @@ const CreateCategoryPage = () => {
     },
   });
 
-  console.log(formik.errors);
-
   return (
     <main className="container mx-auto px-4">
       <div className="mx-auto max-w-5xl">
@@ -45,7 +43,7 @@ const CreateCategoryPage = () => {
           />
 
           <Button
-            className="fle flex w-1/6 self-end bg-color3 hover:bg-color2"
+            className="fle flex w-1/6 self-end bg-purple-600 hover:bg-color3"
             disabled={isPending}
           >
             {isPending ? (

@@ -1,4 +1,3 @@
-
 import { createEventService } from '@/services/event/create-event.service';
 import { getEventService } from '@/services/event/get-event.service';
 import { getEventsService } from '@/services/event/get-events.service';
